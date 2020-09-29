@@ -1,0 +1,14 @@
+{
+  "modelPackage": "com.strandls.pages.pojo",
+  "apiPackage": "com.strandls.pages.controllers",
+  "invokerPackage": "com.strandls.pages",
+  "groupId": "com.strandls.pages",
+  "artifactId": "pages-client",
+  "artifactVersion": "1.0.0",
+  "fullJavaUtil": true,
+  "dateLibrary": "legacy",
+  "library": "jersey2",
+  "developerName": "Vilay Kandi",
+  "developerEmail": "vilayk@strandls.com",
+  "java8": true
+}
