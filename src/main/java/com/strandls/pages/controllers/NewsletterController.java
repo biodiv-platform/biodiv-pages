@@ -83,7 +83,7 @@ public class NewsletterController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Save Newsletter", notes = "Returns Newsletter details", response = Newsletter.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
-	public Response getNewslettersByGroup(@Context HttpServletRequest request, @ApiParam(name = "Newsletter") Newsletter newsletter) throws ApiException {
+	public Response saveNewsletter(@Context HttpServletRequest request, @ApiParam(name = "Newsletter") Newsletter newsletter) throws ApiException {
 		try {
 			newsletter = newsletterSerivce.save(newsletter);
 			return Response.status(Status.OK).entity(newsletter).build();

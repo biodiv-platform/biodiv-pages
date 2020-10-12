@@ -40,7 +40,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "get the Page by ID", notes = "Returns page with content details", response = Page.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
-	public Response getNewsletter(@PathParam("id") String objectId) {
+	public Response getPage(@PathParam("id") String objectId) {
 		try {
 			Long id = Long.parseLong(objectId);
 			Newsletter newsletter = newsletterSerivce.findById(id);
