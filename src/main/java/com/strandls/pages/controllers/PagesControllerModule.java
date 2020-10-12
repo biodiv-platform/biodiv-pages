@@ -16,5 +16,6 @@ public class PagesControllerModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(NewsletterController.class).in(Scopes.SINGLETON);
+		bind(PageController.class).in(Scopes.SINGLETON);
 	}
 }
