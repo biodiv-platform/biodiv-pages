@@ -30,6 +30,8 @@ public interface PageSerivce {
 	public Boolean getCheckForStickyPermission(HttpServletRequest request);
 
 	public Page savePage(HttpServletRequest request, PageCreate page);
+	
+	public void migrate();
 
 	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates, Boolean sticky);
 

@@ -63,7 +63,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	@Override
 	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates, Boolean sticky) {
 		
-		if(pageTreeUpdates.size() == 0 )
+		if(pageTreeUpdates.isEmpty())
 			return new ArrayList<PageTree>();
 		
 		for(PageTreeUpdate pageTreeUpdate : pageTreeUpdates) {
@@ -90,9 +90,10 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		return page;
 	}
 	
+	@Override
 	public void migrate() {
 		List<Page> pages = pageDao.findAll();
-		if(pages.size() != 0)
+		if(pages.isEmpty())
 			return;
 
 		List<Newsletter> newsletters = newsletterDao.findAll();
@@ -107,7 +108,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			Long userGroupId = newsletter.getUserGroupId();
 			Long languageId = newsletter.getLanguageId();
 			Integer pageIndex = newsletter.getDisplayOrder();
-			Long parentId = 0L;  // TODO :
+			Long parentId = 0L;
 			PageType pageType = PageType.CONTENT;
 			String url = "";
 			Long autherId = 1L;
@@ -155,7 +156,6 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	@Override
 	public List<PageTree> getTreeStructure(Long userGroupId, Long languageId, Boolean sticky) {
-		//migrate();
 		List<Page> pages = pageDao.getByUserGroupAndLanguage(userGroupId, languageId, sticky);
 		
 		Map<Long, PageTree> treeNodes = new HashMap<Long, PageTree>();
@@ -181,8 +181,6 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	@Override
 	public Boolean getCheckForStickyPermission(HttpServletRequest request) {
-		
-		// TODO Auto-generated method stub
 		return true;
 	}
 

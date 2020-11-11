@@ -18,6 +18,10 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
+import org.pac4j.core.profile.CommonProfile;
+
+import com.strandls.authentication_utility.filter.ValidateUser;
+import com.strandls.authentication_utility.util.AuthUtil;
 import com.strandls.pages.ApiConstants;
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
@@ -31,6 +35,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import net.minidev.json.JSONArray;
 
 @Api("Page Serivce")
 @Path(ApiConstants.V1 + ApiConstants.PAGE)
@@ -71,6 +76,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns Newsletter details", response = PageTree.class, responseContainer = "List")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Newsletter not found", response = String.class) })
+	@ValidateUser
 	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") Long userGroupId,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
@@ -87,6 +93,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Save Page", notes = "Returns Page details", response = PageCreate.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
+	@ValidateUser
 	public Response savePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageCreate pageCreate) {
 		try {
 			Page page = pageService.savePage(request, pageCreate);
@@ -102,6 +109,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShow.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@ValidateUser
 	public Response updateTreeStructure(@Context HttpServletRequest request, @ApiParam(name = "pageTree") List<PageTreeUpdate> pageTreeUpdates) {
 		try {
 			Boolean sticky = pageService.getCheckForStickyPermission(request);
@@ -118,6 +126,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "update the parent of the page", notes = "return the updated hierarachy", response = PageShow.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@ValidateUser
 	public Response updateParent(@QueryParam("pageId") Long pageId, @QueryParam("parentId") Long parentId) {
 		try {
 			Page page = pageService.updateParent(pageId, parentId);
@@ -125,5 +134,24 @@ public class PageController {
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
+	}
+	
+	@POST
+	@Path("migrate")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@ApiOperation(value = "Migrate the Data from newsletter to pages", notes = "Will be depricated once the migration happens")
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@ValidateUser
+	public Response migrateData(@Context HttpServletRequest request) {
+		
+		CommonProfile profile = AuthUtil.getProfileFromRequest(request);
+		JSONArray roles = (JSONArray) profile.getAttribute("roles");
+		
+		if (roles.contains("ROLE_ADMIN"))
+			return Response.status(Status.UNAUTHORIZED).build();
+		
+		pageService.migrate();
+		
+		return Response.status(Status.OK).build();
 	}
 }
