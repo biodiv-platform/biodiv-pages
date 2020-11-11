@@ -97,7 +97,7 @@ public class PageController {
 	}
 
 	@PUT
-	@Path("updateParent")
+	@Path("updateTree")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShow.class)
