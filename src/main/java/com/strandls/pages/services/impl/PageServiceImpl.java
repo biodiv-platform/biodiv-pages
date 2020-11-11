@@ -93,7 +93,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	@Override
 	public void migrate() {
 		List<Page> pages = pageDao.findAll();
-		if(pages.isEmpty())
+		if(!pages.isEmpty())
 			return;
 
 		List<Newsletter> newsletters = newsletterDao.findAll();

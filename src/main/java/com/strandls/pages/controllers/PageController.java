@@ -145,9 +145,12 @@ public class PageController {
 	public Response migrateData(@Context HttpServletRequest request) {
 		
 		CommonProfile profile = AuthUtil.getProfileFromRequest(request);
+		if (profile == null)
+			return Response.status(Status.UNAUTHORIZED).entity("Missing authorization header").build();
+		
 		JSONArray roles = (JSONArray) profile.getAttribute("roles");
 		
-		if (roles.contains("ROLE_ADMIN"))
+		if (!roles.contains("ROLE_ADMIN"))
 			return Response.status(Status.UNAUTHORIZED).build();
 		
 		pageService.migrate();
