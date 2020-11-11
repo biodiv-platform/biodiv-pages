@@ -1,4 +1,4 @@
-package com.strandls.pages.pojo;
+package com.strandls.pages.pojo.response;
 
 import java.util.List;
 

@@ -1,23 +1,27 @@
-package com.strandls.pages.pojo;
+package com.strandls.pages.pojo.response;
 
-public class Page {
+import java.sql.Timestamp;
+
+import com.strandls.pages.pojo.Page;
+
+public class PageShow {
 
 	private Long id;
 	private String title;
 	private String content;
 
-	public Page() {
+	public PageShow() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 	
-	public Page(Newsletter newsletter) {
+	public PageShow(Page newsletter) {
 		this.id = newsletter.getId();
 		this.title = newsletter.getTitle();
-		this.content = newsletter.getNewsitem();
+		this.content = newsletter.getContent();
 	}
 
-	public Page(Long id, String title, String content) {
+	public PageShow(Long id, String title, String content, Timestamp date, Boolean sticky, Boolean showInFooter,
+			Long parentId) {
 		super();
 		this.id = id;
 		this.title = title;

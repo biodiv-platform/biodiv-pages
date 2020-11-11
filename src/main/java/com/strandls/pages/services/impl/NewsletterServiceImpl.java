@@ -12,8 +12,8 @@ import javax.inject.Inject;
 
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.pojo.Newsletter;
-import com.strandls.pages.pojo.NewsletterArrayList;
-import com.strandls.pages.pojo.NewsletterWithParentChildRelationship;
+import com.strandls.pages.pojo.response.NewsletterArrayList;
+import com.strandls.pages.pojo.response.NewsletterWithParentChildRelationship;
 import com.strandls.pages.services.NewsletterSerivce;
 import com.strandls.pages.util.AbstractService;
 

@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response.Status;
 
 import com.strandls.pages.ApiConstants;
 import com.strandls.pages.pojo.Newsletter;
-import com.strandls.pages.pojo.NewsletterWithParentChildRelationship;
+import com.strandls.pages.pojo.response.NewsletterWithParentChildRelationship;
 import com.strandls.pages.services.NewsletterSerivce;
 import com.strandls.user.ApiException;
 

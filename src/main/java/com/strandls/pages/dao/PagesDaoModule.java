@@ -16,5 +16,6 @@ public class PagesDaoModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(NewsletterDao.class).in(Scopes.SINGLETON);
+		bind(PageDao.class).in(Scopes.SINGLETON);
 	}
 }
