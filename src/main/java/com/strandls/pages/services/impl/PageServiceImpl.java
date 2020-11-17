@@ -52,6 +52,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setSticky(pageCreate.getSticky());
 		page.setShowInFooter(pageCreate.getShowInFooter());
 		page.setIsDeleted(false);
+		page.setPageIndex(0); // Setting the value 0 just because it is non null.
 		
 		page = save(page);
 		
