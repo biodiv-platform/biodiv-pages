@@ -10,7 +10,7 @@ public class PageTree {
 	private String title;
 	private Long parentId;
 	private Integer pageIndex;
-	private List<PageTree> childs;
+	private List<PageTree> children;
 
 	public PageTree() {
 		super();
@@ -22,7 +22,7 @@ public class PageTree {
 		this.title = page.getTitle();
 		this.parentId = page.getParentId();
 		this.pageIndex = page.getPageIndex();
-		this.childs = new PageArrayList();
+		this.children = new PageArrayList();
 	}
 	
 	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs) {
@@ -31,7 +31,7 @@ public class PageTree {
 		this.title = title;
 		this.parentId = parentId;
 		this.pageIndex = index;
-		this.childs = childs;
+		this.children = childs;
 	}
 
 	public Long getId() {
@@ -66,11 +66,11 @@ public class PageTree {
 		this.pageIndex = pageIndex;
 	}
 
-	public List<PageTree> getChilds() {
-		return childs;
+	public List<PageTree> getChildren() {
+		return children;
 	}
 
-	public void setChilds(List<PageTree> childs) {
-		this.childs = childs;
+	public void setChildren(List<PageTree> children) {
+		this.children = children;
 	}
 }

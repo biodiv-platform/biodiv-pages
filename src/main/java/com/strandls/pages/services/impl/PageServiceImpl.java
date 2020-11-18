@@ -173,7 +173,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 				resultTree.add(pageTree);
 			} else {
 				PageTree parentPage = treeNodes.get(parentId);
-				parentPage.getChilds().add(pageTree);
+				parentPage.getChildren().add(pageTree);
 			}
 		}
 		
