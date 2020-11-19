@@ -105,7 +105,6 @@ public class PageController {
 
 	@PUT
 	@Path("updateTree")
-	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShow.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
