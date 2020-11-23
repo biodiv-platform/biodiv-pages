@@ -3,6 +3,7 @@ package com.strandls.pages.controllers;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.naming.directory.InvalidAttributesException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DefaultValue;
@@ -27,7 +28,8 @@ import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
 import com.strandls.pages.pojo.request.PageUpdate;
-import com.strandls.pages.pojo.response.PageShow;
+import com.strandls.pages.pojo.response.PageShowFull;
+import com.strandls.pages.pojo.response.PageShowMinimal;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
 
@@ -58,14 +60,19 @@ public class PageController {
 	@Path("{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "get the Page by ID", notes = "Returns page with content details", response = PageShow.class)
+	@ApiOperation(value = "get the Page by ID", notes = "Returns page with content details", response = PageShowMinimal.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
-	public Response getPage(@PathParam("id") String objectId) {
+	public Response getPage(@PathParam("id") String objectId, @DefaultValue("minimal") @QueryParam("format") String format) {
 		try {
 			Long id = Long.parseLong(objectId);
-			Page newsletter = pageService.findById(id);
+			Page page = pageService.findById(id);
 
-			return Response.status(Status.OK).entity(new PageShow(newsletter)).build();
+			if("minimal".equalsIgnoreCase(format))
+				return Response.status(Status.OK).entity(new PageShowMinimal(page)).build();
+			else if("full".equalsIgnoreCase(format))
+				return Response.status(Status.OK).entity(new PageShowFull(page)).build();
+			else
+				throw new InvalidAttributesException("Invalid format");
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
@@ -93,7 +100,7 @@ public class PageController {
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Save Page", notes = "Returns Page details", response = PageCreate.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the page", response = String.class) })
 	@ValidateUser
 	public Response savePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageCreate pageCreate) {
 		try {
@@ -107,8 +114,8 @@ public class PageController {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Save Page", notes = "Returns Page details", response = PageCreate.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
+	@ApiOperation(value = "Update Page", notes = "Returns Page details", response = PageCreate.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not update the page", response = String.class) })
 	@ValidateUser
 	public Response updatePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageUpdate pageUpdate) {
 		try {
@@ -122,7 +129,7 @@ public class PageController {
 	@PUT
 	@Path("updateTree")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShow.class)
+	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShowMinimal.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
 	@ValidateUser
 	public Response updateTreeStructure(@Context HttpServletRequest request, @ApiParam(name = "pageTree") List<PageTreeUpdate> pageTreeUpdates) {
@@ -139,13 +146,13 @@ public class PageController {
 	@Path("updateParent")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "update the parent of the page", notes = "return the updated hierarachy", response = PageShow.class)
+	@ApiOperation(value = "update the parent of the page", notes = "return the updated hierarachy", response = PageShowMinimal.class)
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
 	@ValidateUser
 	public Response updateParent(@QueryParam("pageId") Long pageId, @QueryParam("parentId") Long parentId) {
 		try {
 			Page page = pageService.updateParent(pageId, parentId);
-			return Response.status(Status.OK).entity(new PageShow(page)).build();
+			return Response.status(Status.OK).entity(new PageShowMinimal(page)).build();
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}

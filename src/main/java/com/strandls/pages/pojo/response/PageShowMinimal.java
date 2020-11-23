@@ -4,23 +4,23 @@ import java.sql.Timestamp;
 
 import com.strandls.pages.pojo.Page;
 
-public class PageShow {
+public class PageShowMinimal {
 
 	private Long id;
 	private String title;
 	private String content;
 
-	public PageShow() {
+	public PageShowMinimal() {
 		super();
 	}
 	
-	public PageShow(Page newsletter) {
+	public PageShowMinimal(Page newsletter) {
 		this.id = newsletter.getId();
 		this.title = newsletter.getTitle();
 		this.content = newsletter.getContent();
 	}
 
-	public PageShow(Long id, String title, String content, Timestamp date, Boolean sticky, Boolean showInFooter,
+	public PageShowMinimal(Long id, String title, String content, Timestamp date, Boolean sticky, Boolean showInFooter,
 			Long parentId) {
 		super();
 		this.id = id;
