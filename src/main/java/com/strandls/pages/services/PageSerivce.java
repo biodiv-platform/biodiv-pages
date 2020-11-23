@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
+import com.strandls.pages.pojo.request.PageUpdate;
 import com.strandls.pages.pojo.response.PageTree;
 
 /**
@@ -34,5 +35,7 @@ public interface PageSerivce {
 	public void migrate();
 
 	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates, Boolean sticky);
+
+	public Page updatePage(HttpServletRequest request, PageUpdate pageUpdate);
 
 }

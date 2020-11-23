@@ -16,6 +16,7 @@ import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.PageType;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
+import com.strandls.pages.pojo.request.PageUpdate;
 import com.strandls.pages.pojo.response.PageArrayList;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
@@ -59,6 +60,22 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setPageIndex(page.getId().intValue());
 		
 		return page;
+	}
+	
+	@Override
+	public Page updatePage(HttpServletRequest request, PageUpdate pageUpdate) {
+		
+		Page page = findById(Long.parseLong(pageUpdate.getId()));
+		
+		page.setTitle(pageUpdate.getTitle());
+		page.setContent(pageUpdate.getContent());
+		page.setDescription(pageUpdate.getDescription());
+		page.setPageType(pageUpdate.getPageType());
+		page.setUrl(pageUpdate.getUrl());
+		page.setSticky(pageUpdate.getSticky());
+		page.setShowInFooter(pageUpdate.getShowInFooter());
+		
+		return update(page);
 	}
 	
 	@Override

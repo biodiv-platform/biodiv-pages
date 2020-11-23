@@ -4,28 +4,38 @@ import com.strandls.pages.pojo.PageType;
 
 public class PageUpdate {
 
+	private String id;
 	private String title;
 	private String content;
 	private String description;
 	private PageType pageType;
 	private String url;
-	private Boolean Sticky;
+	private Boolean sticky;
 	private Boolean showInFooter;
 
 	public PageUpdate() {
 		super();
 	}
 
-	public PageUpdate(String title, String content, String description, PageType pageType, String url, Boolean sticky,
-			Boolean showInFooter) {
+	public PageUpdate(String id, String title, String content, String description, PageType pageType, String url,
+			Boolean sticky, Boolean showInFooter) {
 		super();
+		this.id = id;
 		this.title = title;
 		this.content = content;
 		this.description = description;
 		this.pageType = pageType;
 		this.url = url;
-		Sticky = sticky;
+		this.sticky = sticky;
 		this.showInFooter = showInFooter;
+	}
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
 	}
 
 	public String getTitle() {
@@ -69,11 +79,11 @@ public class PageUpdate {
 	}
 
 	public Boolean getSticky() {
-		return Sticky;
+		return sticky;
 	}
 
 	public void setSticky(Boolean sticky) {
-		Sticky = sticky;
+		this.sticky = sticky;
 	}
 
 	public Boolean getShowInFooter() {
@@ -83,5 +93,4 @@ public class PageUpdate {
 	public void setShowInFooter(Boolean showInFooter) {
 		this.showInFooter = showInFooter;
 	}
-
 }

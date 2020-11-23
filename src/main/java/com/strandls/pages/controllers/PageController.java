@@ -26,6 +26,7 @@ import com.strandls.pages.ApiConstants;
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
+import com.strandls.pages.pojo.request.PageUpdate;
 import com.strandls.pages.pojo.response.PageShow;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
@@ -97,6 +98,21 @@ public class PageController {
 	public Response savePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageCreate pageCreate) {
 		try {
 			Page page = pageService.savePage(request, pageCreate);
+			return Response.status(Status.OK).entity(page).build();
+		} catch (Exception e) {
+			return Response.status(Status.BAD_REQUEST).build();
+		}
+	}
+	
+	@PUT
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	@ApiOperation(value = "Save Page", notes = "Returns Page details", response = PageCreate.class)
+	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
+	@ValidateUser
+	public Response updatePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageUpdate pageUpdate) {
+		try {
+			Page page = pageService.updatePage(request, pageUpdate);
 			return Response.status(Status.OK).entity(page).build();
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
