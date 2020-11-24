@@ -153,6 +153,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			page.setShowInFooter(showInFooter);
 			page.setIsDeleted(isDeleted);
 			
+			page.setId(id);
+			
 			page = save(page);
 			
 			idToPage.put(id, page);
