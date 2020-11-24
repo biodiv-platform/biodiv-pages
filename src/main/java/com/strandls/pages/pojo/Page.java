@@ -83,7 +83,7 @@ public class Page implements Serializable {
 	}
 
 	@Id
-	//@GeneratedValue
+	@GeneratedValue
 	@Column(name = "id")
 	public Long getId() {
 		return id;
