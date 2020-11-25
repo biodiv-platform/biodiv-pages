@@ -8,7 +8,9 @@ import java.util.Map;
 
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
+import javax.ws.rs.core.HttpHeaders;
 
+import com.strandls.authentication_utility.util.AuthUtil;
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
 import com.strandls.pages.pojo.Newsletter;
@@ -21,20 +23,26 @@ import com.strandls.pages.pojo.response.PageArrayList;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
 import com.strandls.pages.util.AbstractService;
+import com.strandls.pages.util.AuthUtility;
+import com.strandls.userGroup.ApiException;
+import com.strandls.userGroup.controller.UserGroupSerivceApi;
 
-public class PageServiceImpl extends AbstractService<Page> implements PageSerivce{
-	
+public class PageServiceImpl extends AbstractService<Page> implements PageSerivce {
+
 	@Inject
 	private PageDao pageDao;
-	
+
 	@Inject
 	private NewsletterDao newsletterDao;
-	
+
+	@Inject
+	private UserGroupSerivceApi userGroupSerivceApi;
+
 	@Inject
 	public PageServiceImpl(PageDao dao) {
 		super(dao);
 	}
-	
+
 	@Override
 	public Page savePage(HttpServletRequest request, PageCreate pageCreate) {
 
@@ -54,19 +62,19 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setShowInFooter(pageCreate.getShowInFooter());
 		page.setIsDeleted(false);
 		page.setPageIndex(0); // Setting the value 0 just because it is non null.
-		
+
 		page = save(page);
-		
+
 		page.setPageIndex(page.getId().intValue());
-		
+
 		return page;
 	}
-	
+
 	@Override
 	public Page updatePage(HttpServletRequest request, PageUpdate pageUpdate) {
-		
+
 		Page page = findById(Long.parseLong(pageUpdate.getId()));
-		
+
 		page.setTitle(pageUpdate.getTitle());
 		page.setContent(pageUpdate.getContent());
 		page.setDescription(pageUpdate.getDescription());
@@ -74,51 +82,52 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setUrl(pageUpdate.getUrl());
 		page.setSticky(pageUpdate.getSticky());
 		page.setShowInFooter(pageUpdate.getShowInFooter());
-		
+
 		return update(page);
 	}
-	
+
 	@Override
-	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates, Boolean sticky) {
-		
-		if(pageTreeUpdates.isEmpty())
+	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates,
+			Boolean sticky) {
+
+		if (pageTreeUpdates.isEmpty())
 			return new ArrayList<PageTree>();
-		
-		for(PageTreeUpdate pageTreeUpdate : pageTreeUpdates) {
+
+		for (PageTreeUpdate pageTreeUpdate : pageTreeUpdates) {
 			Page page = findById(pageTreeUpdate.getId());
 			page.setParentId(pageTreeUpdate.getParentId());
 			page.setPageIndex(pageTreeUpdate.getPageIndex());
 			update(page);
 		}
-		
+
 		Page page = findById(pageTreeUpdates.get(0).getId());
 		Long userGroupId = page.getUserGroupId();
 		Long languageId = page.getLanguageId();
-		
+
 		return getTreeStructure(userGroupId, languageId, sticky);
 	}
-	
+
 	@Override
 	public Page updateParent(Long pageId, Long parentId) {
 		Page page = pageDao.findById(pageId);
-		if(page != null) {
+		if (page != null) {
 			page.setParentId(parentId);
 			page = pageDao.update(page);
 		}
 		return page;
 	}
-	
+
 	@Override
 	public void migrate() {
 		List<Page> pages = pageDao.findAll();
-		if(!pages.isEmpty())
+		if (!pages.isEmpty())
 			return;
 
 		List<Newsletter> newsletters = newsletterDao.findAll();
-		
+
 		Map<Long, Page> idToPage = new HashMap<Long, Page>();
-		
-		for(Newsletter newsletter : newsletters) {
+
+		for (Newsletter newsletter : newsletters) {
 			Long id = newsletter.getId();
 			String title = newsletter.getTitle();
 			String content = newsletter.getNewsitem();
@@ -135,7 +144,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			Boolean sticky = newsletter.getSticky();
 			Boolean showInFooter = newsletter.getShowInFooter();
 			Boolean isDeleted = false;
-			
+
 			Page page = new Page();
 			page.setTitle(title);
 			page.setContent(content);
@@ -152,19 +161,19 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			page.setSticky(sticky);
 			page.setShowInFooter(showInFooter);
 			page.setIsDeleted(isDeleted);
-			
+
 			page = save(page);
-			
+
 			idToPage.put(id, page);
 		}
-		
-		for(Newsletter newsletter : newsletters) {
+
+		for (Newsletter newsletter : newsletters) {
 			Long id = newsletter.getId();
 			Long parentId = newsletter.getParentId();
-			
+
 			Page page = idToPage.get(id);
-			
-			if(parentId != 0) {
+
+			if (parentId != 0) {
 				Page parentPage = idToPage.get(parentId);
 				page.setParentId(parentPage.getId());
 				update(page);
@@ -175,25 +184,25 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	@Override
 	public List<PageTree> getTreeStructure(Long userGroupId, Long languageId, Boolean sticky) {
 		List<Page> pages = pageDao.getByUserGroupAndLanguage(userGroupId, languageId, sticky);
-		
+
 		Map<Long, PageTree> treeNodes = new HashMap<Long, PageTree>();
-		for(Page page : pages) {
+		for (Page page : pages) {
 			PageTree pageTree = new PageTree(page);
 			treeNodes.put(page.getId(), pageTree);
 		}
 		List<PageTree> resultTree = new PageArrayList();
-		
-		for(Map.Entry<Long, PageTree> entry : treeNodes.entrySet()) {
+
+		for (Map.Entry<Long, PageTree> entry : treeNodes.entrySet()) {
 			PageTree pageTree = entry.getValue();
 			Long parentId = pageTree.getParentId();
-			if(parentId == 0 ) {
+			if (parentId == 0) {
 				resultTree.add(pageTree);
 			} else {
 				PageTree parentPage = treeNodes.get(parentId);
 				parentPage.getChildren().add(pageTree);
 			}
 		}
-		
+
 		return resultTree;
 	}
 
@@ -202,4 +211,27 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		return true;
 	}
 
+	@Override
+	public Page deletePage(HttpServletRequest request, Long pageId) {
+		Page page = findById(pageId);
+		page.setIsDeleted(true);
+		return update(page);
+	}
+
+	@Override
+	public boolean checkForPagePermission(HttpServletRequest request, Long pageId) throws ApiException {
+		Page page = findById(pageId);
+		Long userGroupId = page.getUserGroupId();
+		return checkForGroupPermission(request, userGroupId);
+	}
+	
+	@Override
+	public boolean checkForGroupPermission(HttpServletRequest request, Long userGroupId) throws ApiException {
+		if(userGroupId == null) {
+			return AuthUtility.isAdmin(request);
+		}
+		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+		userGroupSerivceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
+		return userGroupSerivceApi.enableEdit(userGroupId.toString());
+	}
 }

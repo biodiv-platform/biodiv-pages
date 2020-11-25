@@ -12,6 +12,7 @@ import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
 import com.strandls.pages.pojo.request.PageUpdate;
 import com.strandls.pages.pojo.response.PageTree;
+import com.strandls.userGroup.ApiException;
 
 /**
  * 
@@ -37,5 +38,11 @@ public interface PageSerivce {
 	public List<PageTree> updateTreeStructure(HttpServletRequest request, List<PageTreeUpdate> pageTreeUpdates, Boolean sticky);
 
 	public Page updatePage(HttpServletRequest request, PageUpdate pageUpdate);
+
+	public Page deletePage(HttpServletRequest request, Long pageId);
+
+	public boolean checkForPagePermission(HttpServletRequest request, Long pageId) throws ApiException;
+	
+	public boolean checkForGroupPermission(HttpServletRequest request, Long pageId) throws ApiException;
 
 }
