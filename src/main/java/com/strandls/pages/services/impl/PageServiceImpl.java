@@ -10,7 +10,6 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 
-import com.strandls.authentication_utility.util.AuthUtil;
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
 import com.strandls.pages.pojo.Newsletter;
