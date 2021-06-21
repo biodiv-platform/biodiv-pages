@@ -9,7 +9,7 @@
   <version>1.0.0</version>
   <packaging>war</packaging>
 
-  <name>biodiv-pages-api</name>
+  <name>biodiv-pages</name>
   <url>https://github.com/strandls/biodiv-pages</url>
   <properties>
 		<!-- Plugins property -->
