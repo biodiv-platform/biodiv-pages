@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiModel;
 
 /**
  * This pojo represent the page structure from newsletter.
- * TODO  : Need to move this to appropriate location after independant pages service being deployed.
  * @author vilay
  *
  */

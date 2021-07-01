@@ -47,7 +47,6 @@ public class PageDao extends AbstractDAO<Page, Long>{
 		return entity;
 	}
 	
-	@SuppressWarnings("unchecked")
 	public List<Page> getByUserGroupAndLanguage(Long userGroupId, Long languageId, Boolean sticky) {
 		String queryStr = ""
 				+ "from " + daoType.getSimpleName() + " t "
@@ -56,7 +55,7 @@ public class PageDao extends AbstractDAO<Page, Long>{
 						+ ( sticky.booleanValue() ? "sticky = true " : "sticky = false " );
 		
 		Session session = sessionFactory.openSession();
-		Query<Page> query = session.createQuery(queryStr);
+		Query<Page> query = session.createQuery(queryStr, Page.class);
 		query.setParameter("userGroupId", userGroupId);
 		query.setParameter("languageId", languageId);
 		
