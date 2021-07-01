@@ -20,7 +20,7 @@ public abstract class AbstractService<T> {
 	}
 
 	public T delete(Long id) {
-		T entity = (T) this.dao.findById(id);
+		T entity = this.dao.findById(id);
 		this.dao.delete(entity);
 		return entity;
 	}
