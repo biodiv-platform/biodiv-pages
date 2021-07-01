@@ -10,11 +10,12 @@ import net.minidev.json.JSONArray;
 
 public class AuthUtility {
 
+	private AuthUtility() {
+	}
+
 	public static boolean isAdmin(HttpServletRequest request) {
 		CommonProfile profile = AuthUtil.getProfileFromRequest(request);
 		JSONArray roles = (JSONArray) profile.getAttribute("roles");
-		if (roles.contains("ROLE_ADMIN"))
-			return true;
-		return false;
+		return roles.contains("ROLE_ADMIN");
 	}
 }

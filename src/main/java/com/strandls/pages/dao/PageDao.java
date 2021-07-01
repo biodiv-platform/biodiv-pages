@@ -6,7 +6,6 @@ package com.strandls.pages.dao;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -54,8 +53,7 @@ public class PageDao extends AbstractDAO<Page, Long>{
 				+ "from " + daoType.getSimpleName() + " t "
 						+ " where ((t.userGroupId is null and :userGroupId is null) or t.userGroupId = :userGroupId) and "
 						+ "t.languageId = :languageId and is_deleted = false and "
-						+ ( sticky ? "sticky = true " : "sticky = false " );
-						//+ " order by displayOrder";
+						+ ( sticky.booleanValue() ? "sticky = true " : "sticky = false " );
 		
 		Session session = sessionFactory.openSession();
 		Query<Page> query = session.createQuery(queryStr);
@@ -63,11 +61,7 @@ public class PageDao extends AbstractDAO<Page, Long>{
 		query.setParameter("languageId", languageId);
 		
 		List<Page> resultList;
-		try {
-			resultList = query.getResultList();
-		} catch(NoResultException e) {
-			throw e;
-		}
+		resultList = query.getResultList();
 		
 		session.close();
 		return resultList;

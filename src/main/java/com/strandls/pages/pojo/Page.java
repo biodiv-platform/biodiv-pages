@@ -60,28 +60,6 @@ public class Page implements Serializable {
 		super();
 	}
 	
-	public Page(Long id, String title, String content, String description, Long userGroupId, Long languageId,
-			Integer pageIndex, Long parentId, PageType pageType, String url, Long autherId, String autherName,
-			Timestamp date, Boolean sticky, Boolean showInFooter, Boolean isDeleted) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.description = description;
-		this.userGroupId = userGroupId;
-		this.languageId = languageId;
-		this.pageIndex = pageIndex;
-		this.parentId = parentId;
-		this.pageType = pageType;
-		this.url = url;
-		this.autherId = autherId;
-		this.autherName = autherName;
-		this.date = date;
-		this.sticky = sticky;
-		this.showInFooter = showInFooter;
-		this.isDeleted = isDeleted;
-	}
-
 	@Id
 	@GeneratedValue
 	@Column(name = "id")

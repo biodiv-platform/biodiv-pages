@@ -9,6 +9,8 @@ package com.strandls.pages;
  *
  */
 public class ApiConstants {
+	
+	private ApiConstants() {}
 
 	public static final String V1 = "/v1";
 	public static final String PING = "/ping";

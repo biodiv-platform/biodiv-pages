@@ -18,31 +18,11 @@ public class PageCreate {
 	private Long autherId;
 	private String autherName;
 	private Timestamp date;
-	private Boolean Sticky;
+	private Boolean sticky;
 	private Boolean showInFooter;
 
 	public PageCreate() {
 		super();
-	}
-
-	public PageCreate(String title, String content, String description, Long userGroupId, Long languageId,
-			Long parentId, Integer pageIndex, PageType pageType, String url, Long autherId, String autherName,
-			Timestamp date, Boolean sticky, Boolean showInFooter) {
-		super();
-		this.title = title;
-		this.content = content;
-		this.description = description;
-		this.userGroupId = userGroupId;
-		this.languageId = languageId;
-		this.parentId = parentId;
-		this.pageIndex = pageIndex;
-		this.pageType = pageType;
-		this.url = url;
-		this.autherId = autherId;
-		this.autherName = autherName;
-		this.date = date;
-		Sticky = sticky;
-		this.showInFooter = showInFooter;
 	}
 
 	public String getTitle() {
@@ -142,11 +122,11 @@ public class PageCreate {
 	}
 
 	public Boolean getSticky() {
-		return Sticky;
+		return sticky;
 	}
 
 	public void setSticky(Boolean sticky) {
-		Sticky = sticky;
+		this.sticky = sticky;
 	}
 
 	public Boolean getShowInFooter() {

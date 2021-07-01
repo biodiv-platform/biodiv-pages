@@ -17,19 +17,6 @@ public class PageUpdate {
 		super();
 	}
 
-	public PageUpdate(String id, String title, String content, String description, PageType pageType, String url,
-			Boolean sticky, Boolean showInFooter) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.description = description;
-		this.pageType = pageType;
-		this.url = url;
-		this.sticky = sticky;
-		this.showInFooter = showInFooter;
-	}
-
 	public String getId() {
 		return id;
 	}

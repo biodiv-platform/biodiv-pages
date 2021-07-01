@@ -38,7 +38,7 @@ public class Newsletter implements Serializable{
 	private Timestamp date;
 	private String newsitem;
 	private String title;
-	private Boolean Sticky;
+	private Boolean sticky;
 	private Long userGroupId;
 	private Integer displayOrder;
 	private Long languageId;
@@ -47,22 +47,6 @@ public class Newsletter implements Serializable{
 
 	public Newsletter() {
 		super();
-	}
-
-	public Newsletter(Long id, Long version, Timestamp date, String newsitem, String title, Boolean sticky,
-			Long userGroupId, Integer displayOrder, Long languageId, Long parentId, Boolean showInFooter) {
-		super();
-		this.id = id;
-		this.version = version;
-		this.date = date;
-		this.newsitem = newsitem;
-		this.title = title;
-		Sticky = sticky;
-		this.userGroupId = userGroupId;
-		this.displayOrder = displayOrder;
-		this.languageId = languageId;
-		this.parentId = parentId;
-		this.showInFooter = showInFooter;
 	}
 
 	@Id
@@ -116,11 +100,11 @@ public class Newsletter implements Serializable{
 
 	@Column(name = "sticky")
 	public Boolean getSticky() {
-		return Sticky;
+		return sticky;
 	}
 
 	public void setSticky(Boolean sticky) {
-		Sticky = sticky;
+		this.sticky = sticky;
 	}
 
 	@Column(name = "user_group_id")

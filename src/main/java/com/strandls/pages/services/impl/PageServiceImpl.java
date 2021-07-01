@@ -90,7 +90,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			Boolean sticky) {
 
 		if (pageTreeUpdates.isEmpty())
-			return new ArrayList<PageTree>();
+			return new ArrayList<>();
 
 		for (PageTreeUpdate pageTreeUpdate : pageTreeUpdates) {
 			Page page = findById(pageTreeUpdate.getId());
@@ -124,7 +124,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 		List<Newsletter> newsletters = newsletterDao.findAll();
 
-		Map<Long, Page> idToPage = new HashMap<Long, Page>();
+		Map<Long, Page> idToPage = new HashMap<>();
 
 		for (Newsletter newsletter : newsletters) {
 			Long id = newsletter.getId();
@@ -184,7 +184,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	public List<PageTree> getTreeStructure(Long userGroupId, Long languageId, Boolean sticky) {
 		List<Page> pages = pageDao.getByUserGroupAndLanguage(userGroupId, languageId, sticky);
 
-		Map<Long, PageTree> treeNodes = new HashMap<Long, PageTree>();
+		Map<Long, PageTree> treeNodes = new HashMap<>();
 		for (Page page : pages) {
 			PageTree pageTree = new PageTree(page);
 			treeNodes.put(page.getId(), pageTree);

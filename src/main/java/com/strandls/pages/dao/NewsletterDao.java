@@ -6,7 +6,6 @@ package com.strandls.pages.dao;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.persistence.NoResultException;
 
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -22,10 +21,10 @@ import com.strandls.pages.util.AbstractDAO;
  * @author vilay
  *
  */
-public class NewsletterDao extends AbstractDAO<Newsletter, Long>{
+public class NewsletterDao extends AbstractDAO<Newsletter, Long> {
 
 	private final Logger logger = LoggerFactory.getLogger(NewsletterDao.class);
-	
+
 	/**
 	 * @param sessionFactory
 	 */
@@ -36,7 +35,7 @@ public class NewsletterDao extends AbstractDAO<Newsletter, Long>{
 
 	@Override
 	public Newsletter findById(Long id) {
-		Session session =sessionFactory.openSession();
+		Session session = sessionFactory.openSession();
 		Newsletter entity = null;
 		try {
 			entity = session.get(Newsletter.class, id);
@@ -47,26 +46,21 @@ public class NewsletterDao extends AbstractDAO<Newsletter, Long>{
 		}
 		return entity;
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	public List<Newsletter> getByUserGroupAndLanguage(Long userGroupId, Long languageId) {
-		String queryStr = ""
-				+ "from " + daoType.getSimpleName() + " t "
-						+ " where ((t.userGroupId is null and :userGroupId is null) or t.userGroupId = :userGroupId) and t.languageId = :languageId and sticky = true "
-						+ " order by displayOrder";
-		
+		String queryStr = "" + "from " + daoType.getSimpleName() + " t "
+				+ " where ((t.userGroupId is null and :userGroupId is null) or t.userGroupId = :userGroupId) and t.languageId = :languageId and sticky = true "
+				+ " order by displayOrder";
+
 		Session session = sessionFactory.openSession();
 		Query<Newsletter> query = session.createQuery(queryStr);
 		query.setParameter("userGroupId", userGroupId);
 		query.setParameter("languageId", languageId);
-		
+
 		List<Newsletter> resultList;
-		try {
-			resultList = query.getResultList();
-		} catch(NoResultException e) {
-			throw e;
-		}
-		
+		resultList = query.getResultList();
+
 		session.close();
 		return resultList;
 	}
