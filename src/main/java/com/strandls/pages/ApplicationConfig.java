@@ -91,10 +91,16 @@ public class ApplicationConfig extends Application {
 
 			@Override
 			public void onShutdown(Container container) {
+				/**
+				 * This method is empty and not required to be implemented
+				 */
 			}
 
 			@Override
 			public void onReload(Container container) {
+				/**
+				 * This method is empty and not required to be implemented
+				 */
 			}
 		});
 
