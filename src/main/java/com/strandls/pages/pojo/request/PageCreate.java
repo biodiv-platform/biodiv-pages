@@ -18,7 +18,7 @@ public class PageCreate {
 	private Long autherId;
 	private String autherName;
 	private Timestamp date;
-	private Boolean sticky;
+	private Boolean sticky; // NOSONAR
 	private Boolean showInFooter;
 
 	public PageCreate() {
@@ -122,11 +122,11 @@ public class PageCreate {
 	}
 
 	public Boolean getSticky() {
-		return sticky;
+		return sticky; //NOSONAR
 	}
 
 	public void setSticky(Boolean sticky) {
-		this.sticky = sticky;
+		this.sticky = sticky; //NOSONAR
 	}
 
 	public Boolean getShowInFooter() {
