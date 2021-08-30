@@ -29,10 +29,6 @@ public abstract class AbstractService<T> {
 		return this.dao.findById(id);
 	}
 
-	public List<T> findAll(int limit, int offset) {
-		return this.dao.findAll(limit, offset);
-	}
-
 	public List<T> findAll() {
 
 		return this.dao.findAll();

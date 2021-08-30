@@ -83,13 +83,4 @@ public abstract class AbstractDAO<T, K extends Serializable> {
 		session.close();
 		return entities;
 	}
-
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<T> findAll(int limit, int offset) {
-		Session session = sessionFactory.openSession();
-		Criteria criteria = session.createCriteria(daoType).setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY);
-		List<T> entities = criteria.setFirstResult(offset).setMaxResults(limit).list();
-		session.close();
-		return entities;
-	}
 }
