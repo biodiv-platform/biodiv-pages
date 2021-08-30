@@ -37,7 +37,7 @@ public class Newsletter implements Serializable{
 	private Timestamp date;
 	private String newsitem;
 	private String title;
-	private Boolean sticky;
+	private Boolean Sticky;
 	private Long userGroupId;
 	private Integer displayOrder;
 	private Long languageId;
@@ -99,11 +99,11 @@ public class Newsletter implements Serializable{
 
 	@Column(name = "sticky")
 	public Boolean getSticky() {
-		return sticky;
+		return Sticky;
 	}
 
 	public void setSticky(Boolean sticky) {
-		this.sticky = sticky;
+		this.Sticky = sticky;
 	}
 
 	@Column(name = "user_group_id")
