@@ -1,7 +1,5 @@
 package com.strandls.pages.pojo.response;
 
-import java.sql.Timestamp;
-
 import com.strandls.pages.pojo.Page;
 
 public class PageShowMinimal {
@@ -20,8 +18,7 @@ public class PageShowMinimal {
 		this.content = newsletter.getContent();
 	}
 
-	public PageShowMinimal(Long id, String title, String content, Timestamp date, Boolean sticky, Boolean showInFooter,
-			Long parentId) {
+	public PageShowMinimal(Long id, String title, String content) {
 		super();
 		this.id = id;
 		this.title = title;

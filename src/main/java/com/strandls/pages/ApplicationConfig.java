@@ -11,12 +11,14 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
+import java.util.stream.Stream;
 
 import javax.ws.rs.core.Application;
 
@@ -55,7 +57,7 @@ public class ApplicationConfig extends Application {
 		try {
 			properties.load(in);
 		} catch (IOException e) {
-			e.printStackTrace();
+			logger.error(e.getMessage());
 		}
 
 		BeanConfig beanConfig = new BeanConfig();
@@ -72,7 +74,7 @@ public class ApplicationConfig extends Application {
 	@Override
 	public Set<Object> getSingletons() {
 
-		Set<Object> singletons = new HashSet<Object>();
+		Set<Object> singletons = new HashSet<>();
 		singletons.add(new ContainerLifecycleListener() {
 
 			@Override
@@ -89,14 +91,16 @@ public class ApplicationConfig extends Application {
 
 			@Override
 			public void onShutdown(Container container) {
-				// TODO Auto-generated method stub
-
+				/**
+				 * This method is empty and not required to be implemented
+				 */
 			}
 
 			@Override
 			public void onReload(Container container) {
-				// TODO Auto-generated method stub
-
+				/**
+				 * This method is empty and not required to be implemented
+				 */
 			}
 		});
 
@@ -106,7 +110,7 @@ public class ApplicationConfig extends Application {
 
 	@Override
 	public Set<Class<?>> getClasses() {
-		Set<Class<?>> resource = new HashSet<Class<?>>();
+		Set<Class<?>> resource = new HashSet<>();
 
 		try {
 			List<Class<?>> swaggerClass = getSwaggerAnnotationClassesFromPackage("com");
@@ -127,9 +131,8 @@ public class ApplicationConfig extends Application {
 			throws URISyntaxException, IOException, ClassNotFoundException {
 
 		List<String> classNames = getClassNamesFromPackage(packageName);
-		List<Class<?>> classes = new ArrayList<Class<?>>();
+		List<Class<?>> classes = new ArrayList<>();
 		for (String className : classNames) {
-			// logger.info(className);
 			Class<?> cls = Class.forName(className);
 			Annotation[] annotations = cls.getAnnotations();
 
@@ -143,24 +146,26 @@ public class ApplicationConfig extends Application {
 		return classes;
 	}
 
-	private static ArrayList<String> getClassNamesFromPackage(final String packageName)
+	public static List<String> getClassNamesFromPackage(final String packageName)
 			throws URISyntaxException, IOException {
 
 		ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
-		ArrayList<String> names = new ArrayList<String>();
+		ArrayList<String> names = new ArrayList<>();
 		URL packageURL = classLoader.getResource(packageName);
 
 		URI uri = new URI(packageURL.toString());
 		File folder = new File(uri.getPath());
 
-		Files.find(Paths.get(folder.getAbsolutePath()), 999, (p, bfa) -> bfa.isRegularFile()).forEach(file -> {
-			String name = file.toFile().getAbsolutePath().replaceAll(folder.getAbsolutePath() + File.separatorChar, "")
-					.replace(File.separatorChar, '.');
-			if (name.indexOf('.') != -1) {
-				name = packageName + '.' + name.substring(0, name.lastIndexOf('.'));
-				names.add(name);
-			}
-		});
+		try (Stream<Path> paths = Files.find(Paths.get(folder.getAbsolutePath()), 999, (p, bfa) -> bfa.isRegularFile())) {
+			paths.forEach(file -> {
+				String name = file.toFile().getAbsolutePath().replaceAll(folder.getAbsolutePath() + File.separatorChar, "")
+						.replace(File.separatorChar, '.');
+				if (name.indexOf('.') != -1) {
+					name = packageName + '.' + name.substring(0, name.lastIndexOf('.'));
+					names.add(name);
+				}
+			});
+		}
 
 		return names;
 	}

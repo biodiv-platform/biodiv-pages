@@ -32,7 +32,7 @@ public class NewsletterServiceImpl extends AbstractService<Newsletter> implement
 	@Override
 	public List<NewsletterWithParentChildRelationship> getByUserGroupAndLanguage(Long userGroupId, Long languageId) {
 		List<Newsletter> newsletters = ((NewsletterDao) dao).getByUserGroupAndLanguage(userGroupId, languageId);
-		Map<Long, NewsletterWithParentChildRelationship> newsletterWithParentChildRelationships = new HashMap<Long, NewsletterWithParentChildRelationship>();
+		Map<Long, NewsletterWithParentChildRelationship> newsletterWithParentChildRelationships = new HashMap<>();
 		for (Newsletter newsletter : newsletters) {
 			NewsletterWithParentChildRelationship n = new NewsletterWithParentChildRelationship();
 			n.setId(newsletter.getId());

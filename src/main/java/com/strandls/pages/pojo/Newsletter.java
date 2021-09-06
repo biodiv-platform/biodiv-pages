@@ -18,7 +18,6 @@ import io.swagger.annotations.ApiModel;
 
 /**
  * This pojo represent the page structure from newsletter.
- * TODO  : Need to move this to appropriate location after independant pages service being deployed.
  * @author vilay
  *
  */
@@ -47,22 +46,6 @@ public class Newsletter implements Serializable{
 
 	public Newsletter() {
 		super();
-	}
-
-	public Newsletter(Long id, Long version, Timestamp date, String newsitem, String title, Boolean sticky,
-			Long userGroupId, Integer displayOrder, Long languageId, Long parentId, Boolean showInFooter) {
-		super();
-		this.id = id;
-		this.version = version;
-		this.date = date;
-		this.newsitem = newsitem;
-		this.title = title;
-		Sticky = sticky;
-		this.userGroupId = userGroupId;
-		this.displayOrder = displayOrder;
-		this.languageId = languageId;
-		this.parentId = parentId;
-		this.showInFooter = showInFooter;
 	}
 
 	@Id
@@ -120,7 +103,7 @@ public class Newsletter implements Serializable{
 	}
 
 	public void setSticky(Boolean sticky) {
-		Sticky = sticky;
+		this.Sticky = sticky;
 	}
 
 	@Column(name = "user_group_id")

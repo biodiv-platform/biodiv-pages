@@ -40,22 +40,6 @@ public class PageShowFull {
 		this.showInFooter = page.getShowInFooter();
 	}
 
-	public PageShowFull(Long id, String title, String content, String description, PageType pageType, String url,
-			Long parentId, Integer pageIndex, Timestamp date, Boolean sticky, Boolean showInFooter) {
-		super();
-		this.id = id;
-		this.title = title;
-		this.content = content;
-		this.description = description;
-		this.pageType = pageType;
-		this.url = url;
-		this.parentId = parentId;
-		this.pageIndex = pageIndex;
-		this.date = date;
-		this.sticky = sticky;
-		this.showInFooter = showInFooter;
-	}
-
 	public Long getId() {
 		return id;
 	}

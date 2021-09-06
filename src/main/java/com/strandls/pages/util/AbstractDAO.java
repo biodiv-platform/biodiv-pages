@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.CriteriaSpecification;
 
 public abstract class AbstractDAO<T, K extends Serializable> {
 	
@@ -78,15 +79,8 @@ public abstract class AbstractDAO<T, K extends Serializable> {
 	public List<T> findAll() {
 		Session session = sessionFactory.openSession();
 		Criteria criteria = session.createCriteria(daoType);
-		List<T> entities = criteria.setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY).list();
-		return entities;
-	}
-
-	@SuppressWarnings({ "unchecked", "deprecation" })
-	public List<T> findAll(int limit, int offset) {
-		Session session = sessionFactory.openSession();
-		Criteria criteria = session.createCriteria(daoType).setResultTransformer(Criteria.DISTINCT_ROOT_ENTITY);
-		List<T> entities = criteria.setFirstResult(offset).setMaxResults(limit).list();
+		List<T> entities = criteria.setResultTransformer(CriteriaSpecification.DISTINCT_ROOT_ENTITY).list();
+		session.close();
 		return entities;
 	}
 }
