@@ -213,7 +213,7 @@ public class PageController {
 	@ValidateUser
 	public Response deletePage(@Context HttpServletRequest request, @PathParam("id") Long pageId) {
 		try {
-			if (pageService.checkForGroupPermission(request, pageId)) {
+			if (pageService.checkForPagePermission(request, pageId)) {
 				Page page = pageService.deletePage(request, pageId);
 				return Response.status(Status.OK).entity(page).build();
 			} else {
