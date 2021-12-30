@@ -12,6 +12,7 @@ public class PageShowFull {
 	private String content;
 	private String description;
 
+	private Long userId;
 	private Long languageId;
 	private PageType pageType;
 	private String url;
@@ -32,6 +33,7 @@ public class PageShowFull {
 		this.title = page.getTitle();
 		this.content = page.getContent();
 		this.description = page.getDescription();
+		this.userId = page.getAutherId();
 		this.languageId = page.getLanguageId();
 		this.pageType = page.getPageType();
 		this.url = page.getUrl();
@@ -64,6 +66,14 @@ public class PageShowFull {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public Long getUserId() {
+		return userId;
+	}
+
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getDescription() {
