@@ -11,13 +11,14 @@ public class PageShowFull {
 	private String title;
 	private String content;
 	private String description;
-	
+
+	private Long languageId;
 	private PageType pageType;
 	private String url;
 
 	private Long parentId;
 	private Integer pageIndex;
-	
+
 	private Timestamp date;
 	private Boolean sticky;
 	private Boolean showInFooter;
@@ -25,12 +26,13 @@ public class PageShowFull {
 	public PageShowFull() {
 		super();
 	}
-	
+
 	public PageShowFull(Page page) {
 		this.id = page.getId();
 		this.title = page.getTitle();
 		this.content = page.getContent();
 		this.description = page.getDescription();
+		this.languageId = page.getLanguageId();
 		this.pageType = page.getPageType();
 		this.url = page.getUrl();
 		this.parentId = page.getParentId();
@@ -70,6 +72,14 @@ public class PageShowFull {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public Long getLanguageId() {
+		return languageId;
+	}
+
+	public void setLanguageId(Long languageId) {
+		this.languageId = languageId;
 	}
 
 	public PageType getPageType() {

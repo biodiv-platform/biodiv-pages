@@ -86,7 +86,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns page details", response = PageTree.class, responseContainer = "List")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
-	@ValidateUser
+	//@ValidateUser
 	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") Long userGroupId,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
