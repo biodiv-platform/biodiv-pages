@@ -4,6 +4,9 @@ import java.sql.Timestamp;
 
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.PageType;
+import com.strandls.pages.util.AuthUtility;
+import com.strandls.user.pojo.User;
+import com.strandls.user.pojo.UserIbp;
 
 public class PageShowFull {
 
@@ -12,7 +15,7 @@ public class PageShowFull {
 	private String content;
 	private String description;
 
-	private Long userId;
+	private UserIbp userIbp;
 	private Long languageId;
 	private PageType pageType;
 	private String url;
@@ -28,12 +31,16 @@ public class PageShowFull {
 		super();
 	}
 
-	public PageShowFull(Page page) {
+	public PageShowFull(Page page, User user) {
 		this.id = page.getId();
 		this.title = page.getTitle();
 		this.content = page.getContent();
 		this.description = page.getDescription();
-		this.userId = page.getAutherId();
+		this.userIbp = new UserIbp();
+		this.userIbp.setId(page.getAutherId());
+		this.userIbp.setName(page.getAutherName());
+		this.userIbp.setIsAdmin(AuthUtility.isAdmin(user));
+		this.userIbp.setProfilePic(user.getProfilePic());
 		this.languageId = page.getLanguageId();
 		this.pageType = page.getPageType();
 		this.url = page.getUrl();
@@ -68,12 +75,12 @@ public class PageShowFull {
 		this.content = content;
 	}
 
-	public Long getUserId() {
-		return userId;
+	public UserIbp getUserIbp() {
+		return userIbp;
 	}
 
-	public void setUserId(Long userId) {
-		this.userId = userId;
+	public void setUserIbp(UserIbp userIbp) {
+		this.userIbp = userIbp;
 	}
 
 	public String getDescription() {
