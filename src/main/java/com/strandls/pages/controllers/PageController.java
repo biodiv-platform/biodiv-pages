@@ -33,6 +33,8 @@ import com.strandls.pages.pojo.response.PageShowFull;
 import com.strandls.pages.pojo.response.PageShowMinimal;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
+import com.strandls.user.controller.UserServiceApi;
+import com.strandls.user.pojo.User;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -49,6 +51,9 @@ public class PageController {
 
 	@Inject
 	private PageSerivce pageService;
+
+	@Inject
+	private UserServiceApi userServiceApi;
 
 	@GET
 	@Path("ping")
@@ -71,9 +76,10 @@ public class PageController {
 
 			if ("minimal".equalsIgnoreCase(format))
 				return Response.status(Status.OK).entity(new PageShowMinimal(page)).build();
-			else if ("full".equalsIgnoreCase(format))
-				return Response.status(Status.OK).entity(new PageShowFull(page)).build();
-			else
+			else if ("full".equalsIgnoreCase(format)) {
+				User user = userServiceApi.getUser(page.getAutherId().toString());
+				return Response.status(Status.OK).entity(new PageShowFull(page, user)).build();
+			} else
 				throw new InvalidAttributesException("Invalid format");
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
