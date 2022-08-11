@@ -10,14 +10,20 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
+import com.strandls.pages.dao.PageGallerySilderDao;
 import com.strandls.pages.pojo.Newsletter;
 import com.strandls.pages.pojo.Page;
+import com.strandls.pages.pojo.PageGallerySlider;
 import com.strandls.pages.pojo.PageType;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
 import com.strandls.pages.pojo.request.PageUpdate;
+import com.strandls.pages.pojo.request.ReorderingGalleryPage;
 import com.strandls.pages.pojo.response.PageArrayList;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
@@ -27,12 +33,16 @@ import com.strandls.userGroup.ApiException;
 import com.strandls.userGroup.controller.UserGroupSerivceApi;
 
 public class PageServiceImpl extends AbstractService<Page> implements PageSerivce {
+	private final Logger logger = LoggerFactory.getLogger(PageServiceImpl.class);
 
 	@Inject
 	private PageDao pageDao;
 
 	@Inject
 	private NewsletterDao newsletterDao;
+
+	@Inject
+	private PageGallerySilderDao pageGallerySilderDao;
 
 	@Inject
 	private UserGroupSerivceApi userGroupSerivceApi;
@@ -66,7 +76,15 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 		page.setPageIndex(page.getId().intValue());
 
-		return page;
+		List<PageGallerySlider> galleryData = pageCreate.getGallerySilder();
+		if (galleryData != null && !galleryData.isEmpty()) {
+			for (PageGallerySlider gallery : galleryData) {
+				pageGallerySilderDao.save(gallery);
+			}
+
+		}
+
+		return getPageWithGalleryData(page);
 	}
 
 	@Override
@@ -82,7 +100,33 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setSticky(pageUpdate.getSticky());
 		page.setShowInFooter(pageUpdate.getShowInFooter());
 
-		return update(page);
+//		update gallery slider if contains Id update else create new record
+
+		List<PageGallerySlider> galleryData = pageUpdate.getGallerySilder();
+		if (galleryData != null && !galleryData.isEmpty())
+			for (PageGallerySlider gallery : galleryData) {
+				if (gallery.getId() != null) {
+					PageGallerySlider entity = pageGallerySilderDao.findById(gallery.getId());
+					entity.setDisplayOrder(gallery.getDisplayOrder());
+					entity.setFileName(gallery.getFileName());
+					entity.setPageId(gallery.getPageId());
+					pageGallerySilderDao.update(gallery);
+				} else {
+					pageGallerySilderDao.save(gallery);
+
+				}
+
+			}
+
+		return getPageWithGalleryData(update(page));
+	}
+
+	private Page getPageWithGalleryData(Page page) {
+
+		List<PageGallerySlider> galleryData = pageGallerySilderDao.findByPageId(page.getId());
+		page.setGallerySilder(galleryData);
+		return page;
+
 	}
 
 	@Override
@@ -223,14 +267,49 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		Long userGroupId = page.getUserGroupId();
 		return checkForGroupPermission(request, userGroupId);
 	}
-	
+
 	@Override
 	public boolean checkForGroupPermission(HttpServletRequest request, Long userGroupId) throws ApiException {
-		if(userGroupId == null) {
+		if (userGroupId == null) {
 			return AuthUtility.isAdmin(request);
 		}
 		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 		userGroupSerivceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
 		return userGroupSerivceApi.enableEdit(userGroupId.toString());
+	}
+
+	@Override
+	public Page reorderingPageGallerySlider(Long pageId, List<ReorderingGalleryPage> reorderingGalleryPage) {
+		try {
+			for (ReorderingGalleryPage reOrder : reorderingGalleryPage) {
+				PageGallerySlider gallery = pageGallerySilderDao.findById(reOrder.getGalleryId());
+				gallery.setDisplayOrder(reOrder.getDisplayOrder());
+				pageGallerySilderDao.update(gallery);
+			}
+
+			return getPageWithGalleryData(findById(pageId));
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		return null;
+	}
+
+	@Override
+	public Page removePageGallerySlider(Long gallerySilderId, Long pageId) {
+		try {
+
+			PageGallerySlider entity = pageGallerySilderDao.findById(gallerySilderId);
+			pageGallerySilderDao.delete(entity);
+
+			return getPageWithGalleryData(findById(pageId));
+
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+
+		return null;
+
 	}
 }

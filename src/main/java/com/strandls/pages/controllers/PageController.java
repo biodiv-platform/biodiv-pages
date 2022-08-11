@@ -29,6 +29,7 @@ import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
 import com.strandls.pages.pojo.request.PageUpdate;
+import com.strandls.pages.pojo.request.ReorderingGalleryPage;
 import com.strandls.pages.pojo.response.PageShowFull;
 import com.strandls.pages.pojo.response.PageShowMinimal;
 import com.strandls.pages.pojo.response.PageTree;
@@ -92,7 +93,7 @@ public class PageController {
 	@Produces(MediaType.APPLICATION_JSON)
 	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns page details", response = PageTree.class, responseContainer = "List")
 	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
-	//@ValidateUser
+	// @ValidateUser
 	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") Long userGroupId,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
@@ -153,16 +154,17 @@ public class PageController {
 	public Response updateTreeStructure(@Context HttpServletRequest request,
 			@ApiParam(name = "pageTree") List<PageTreeUpdate> pageTreeUpdates) {
 		try {
-			if(pageTreeUpdates.isEmpty())
+			if (pageTreeUpdates.isEmpty())
 				return Response.status(Status.OK).entity("Nothing to update").build();
-			
+
 			Long pageId = pageTreeUpdates.get(0).getId();
 			if (pageService.checkForPagePermission(request, pageId)) {
 				Boolean sticky = pageService.getCheckForStickyPermission(request);
 				List<PageTree> pageTrees = pageService.updateTreeStructure(request, pageTreeUpdates, sticky);
 				return Response.status(Status.OK).entity(pageTrees).build();
 			} else {
-				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to update the page tree").build();
+				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to update the page tree")
+						.build();
 			}
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
@@ -183,7 +185,8 @@ public class PageController {
 				Page page = pageService.updateParent(pageId, parentId);
 				return Response.status(Status.OK).entity(new PageShowMinimal(page)).build();
 			} else {
-				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to update the parent").build();
+				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to update the parent")
+						.build();
 			}
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
@@ -229,4 +232,65 @@ public class PageController {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
+
+	@PUT
+	@Path(ApiConstants.GALLERY + ApiConstants.REORDERING + "/{pageId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+
+	@ValidateUser
+
+	@ApiOperation(value = "Reorder Page  gallery display order", notes = "return  page data", response = Page.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "unable to retrieve the data", response = String.class) })
+
+	public Response reorderingHomePageGallerySlider(@Context HttpServletRequest request,
+			@PathParam("pageId") String pageId,
+			@ApiParam(name = "reorderingHomePage") List<ReorderingGalleryPage> reorderingGalleryPage) {
+		try {
+			Long pgId = Long.parseLong(pageId);
+
+			if (pageService.checkForPagePermission(request, pgId)) {
+				Page result = pageService.reorderingPageGallerySlider(pgId, reorderingGalleryPage);
+
+				return Response.status(Status.OK).entity(result).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to delete the page").build();
+			}
+
+		} catch (Exception e) {
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+	}
+
+	@PUT
+	@Path(ApiConstants.GALLERY + ApiConstants.REMOVE + "/{pageId}/{galleryId}")
+	@Consumes(MediaType.TEXT_PLAIN)
+	@Produces(MediaType.APPLICATION_JSON)
+
+	@ValidateUser
+
+	@ApiOperation(value = "Delete Page  gallery data by gallery Id", notes = "return  page data", response = Page.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "unable to retrieve the data", response = String.class) })
+
+	public Response removeGalleryData(@Context HttpServletRequest request, @PathParam("pageId") String pageId,
+			@PathParam("galleryId") String galleryId) {
+		try {
+			Long pgId = Long.parseLong(pageId);
+			Long pageGalleryId = Long.parseLong(galleryId);
+
+			if (pageService.checkForPagePermission(request, pgId)) {
+				Page page = pageService.removePageGallerySlider(pageGalleryId, pgId);
+
+				return Response.status(Status.OK).entity(page).build();
+			} else {
+				return Response.status(Status.UNAUTHORIZED).entity("User is not authorized to delete the page").build();
+			}
+
+		} catch (Exception e) {
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
+	}
+
 }

@@ -1,7 +1,9 @@
 package com.strandls.pages.pojo.request;
 
 import java.sql.Timestamp;
+import java.util.List;
 
+import com.strandls.pages.pojo.PageGallerySlider;
 import com.strandls.pages.pojo.PageType;
 
 public class PageCreate {
@@ -20,6 +22,7 @@ public class PageCreate {
 	private Timestamp date;
 	private Boolean Sticky;
 	private Boolean showInFooter;
+	private List<PageGallerySlider> gallerySilder;
 
 	public PageCreate() {
 		super();
@@ -135,5 +138,13 @@ public class PageCreate {
 
 	public void setShowInFooter(Boolean showInFooter) {
 		this.showInFooter = showInFooter;
+	}
+
+	public List<PageGallerySlider> getGallerySilder() {
+		return gallerySilder;
+	}
+
+	public void setGallerySilder(List<PageGallerySlider> gallerySilder) {
+		this.gallerySilder = gallerySilder;
 	}
 }

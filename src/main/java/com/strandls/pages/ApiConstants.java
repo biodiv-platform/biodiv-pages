@@ -17,4 +17,8 @@ public class ApiConstants {
 	public static final String PAGES = "/pages";
 	public static final String NEWSLETTER = "/newsletter";
 	public static final String PAGE = "/page";
+	public static final String GALLERY = "/gallery";
+	public static final String REMOVE = "/remove";
+	public static final String REORDERING = "/reordering";
+
 }
