@@ -1,12 +1,16 @@
 package com.strandls.pages.pojo.response;
 
+import java.util.List;
+
 import com.strandls.pages.pojo.Page;
+import com.strandls.pages.pojo.PageGallerySlider;
 
 public class PageShowMinimal {
 
 	private Long id;
 	private String title;
 	private String content;
+	private List<PageGallerySlider> galleryData;
 
 	public PageShowMinimal() {
 		super();
@@ -16,13 +20,15 @@ public class PageShowMinimal {
 		this.id = newsletter.getId();
 		this.title = newsletter.getTitle();
 		this.content = newsletter.getContent();
+		this.galleryData = newsletter.getGallerySilder();
 	}
 
-	public PageShowMinimal(Long id, String title, String content) {
+	public PageShowMinimal(Long id, String title, String content,List<PageGallerySlider> galleryData) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.content = content;
+		this.galleryData = galleryData;
 	}
 
 	public Long getId() {
@@ -47,5 +53,13 @@ public class PageShowMinimal {
 
 	public void setContent(String content) {
 		this.content = content;
+	}
+
+	public List<PageGallerySlider> getGalleryData() {
+		return galleryData;
+	}
+
+	public void setGalleryData(List<PageGallerySlider> galleryData) {
+		this.galleryData = galleryData;
 	}
 }

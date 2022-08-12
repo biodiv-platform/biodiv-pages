@@ -73,7 +73,7 @@ public class PageController {
 			@DefaultValue("minimal") @QueryParam("format") String format) {
 		try {
 			Long id = Long.parseLong(objectId);
-			Page page = pageService.findById(id);
+			Page page = pageService.findPageById(id);
 
 			if ("minimal".equalsIgnoreCase(format))
 				return Response.status(Status.OK).entity(new PageShowMinimal(page)).build();

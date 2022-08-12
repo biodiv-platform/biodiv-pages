@@ -24,7 +24,7 @@ public interface PageSerivce {
 
 	public Page updateParent(Long pageId, Long parentId);
 
-	public Page findById(Long pageId);
+	public Page findPageById(Long pageId);
 
 	public Page update(Page page);
 

@@ -121,6 +121,17 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		return getPageWithGalleryData(update(page));
 	}
 
+	@Override
+	public Page findPageById(Long pageId) {
+		if (pageId == null) {
+			return null;
+		}
+		Page page = findById(pageId);
+		List<PageGallerySlider> galleryData = pageGallerySilderDao.findByPageId(page.getId());
+		page.setGallerySilder(galleryData);
+		return page;
+	}
+
 	private Page getPageWithGalleryData(Page page) {
 
 		List<PageGallerySlider> galleryData = pageGallerySilderDao.findByPageId(page.getId());

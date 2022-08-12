@@ -1,5 +1,6 @@
 package com.strandls.pages.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -43,7 +44,7 @@ public class PageGallerySilderDao extends AbstractDAO<PageGallerySlider, Long> {
 	public List<PageGallerySlider> findByPageId(Long pgId) {
 		String qry = "from PageGallerySlider where pageId = :pgId";
 		Session session = sessionFactory.openSession();
-		List<PageGallerySlider> result = null;
+		List<PageGallerySlider> result = new ArrayList<>();
 		try {
 			Query<PageGallerySlider> query = session.createQuery(qry);
 			query.setParameter("pgId", pgId);
