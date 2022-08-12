@@ -79,6 +79,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		List<PageGallerySlider> galleryData = pageCreate.getGallerySilder();
 		if (galleryData != null && !galleryData.isEmpty()) {
 			for (PageGallerySlider gallery : galleryData) {
+				gallery.setPageId(page.getId());
+				gallery.setAuthorId(page.getAutherId());
 				pageGallerySilderDao.save(gallery);
 			}
 
@@ -109,9 +111,12 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 					PageGallerySlider entity = pageGallerySilderDao.findById(gallery.getId());
 					entity.setDisplayOrder(gallery.getDisplayOrder());
 					entity.setFileName(gallery.getFileName());
-					entity.setPageId(gallery.getPageId());
+					entity.setPageId(page.getId());
+					entity.setAuthorId(page.getAutherId());
 					pageGallerySilderDao.update(gallery);
 				} else {
+					gallery.setPageId(page.getId());
+					gallery.setAuthorId(page.getAutherId());
 					pageGallerySilderDao.save(gallery);
 
 				}
