@@ -15,7 +15,7 @@ public class PageUpdate {
 	private String url;
 	private Boolean sticky;
 	private Boolean showInFooter;
-	private List<PageGallerySlider> gallerySilder;
+	private List<PageGallerySlider> galleryData;
 
 	public PageUpdate() {
 		super();
@@ -85,11 +85,14 @@ public class PageUpdate {
 		this.showInFooter = showInFooter;
 	}
 
-	public List<PageGallerySlider> getGallerySilder() {
-		return gallerySilder;
+	public List<PageGallerySlider> getGalleryData() {
+		return galleryData;
 	}
 
-	public void setGallerySilder(List<PageGallerySlider> gallerySilder) {
-		this.gallerySilder = gallerySilder;
+	public void setGalleryData(List<PageGallerySlider> galleryData) {
+		this.galleryData = galleryData;
 	}
+
+	
+
 }

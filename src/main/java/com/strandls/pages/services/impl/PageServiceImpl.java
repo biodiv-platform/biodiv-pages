@@ -76,7 +76,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 		page.setPageIndex(page.getId().intValue());
 
-		List<PageGallerySlider> galleryData = pageCreate.getGallerySilder();
+		List<PageGallerySlider> galleryData = pageCreate.getGalleryData();
 		if (galleryData != null && !galleryData.isEmpty()) {
 			for (PageGallerySlider gallery : galleryData) {
 				gallery.setPageId(page.getId());
@@ -104,7 +104,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 //		update gallery slider if contains Id update else create new record
 
-		List<PageGallerySlider> galleryData = pageUpdate.getGallerySilder();
+		List<PageGallerySlider> galleryData = pageUpdate.getGalleryData();
 		if (galleryData != null && !galleryData.isEmpty())
 			for (PageGallerySlider gallery : galleryData) {
 				if (gallery.getId() != null) {

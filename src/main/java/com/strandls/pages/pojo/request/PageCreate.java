@@ -22,7 +22,7 @@ public class PageCreate {
 	private Timestamp date;
 	private Boolean Sticky;
 	private Boolean showInFooter;
-	private List<PageGallerySlider> gallerySilder;
+	private List<PageGallerySlider> galleryData;
 
 	public PageCreate() {
 		super();
@@ -140,11 +140,13 @@ public class PageCreate {
 		this.showInFooter = showInFooter;
 	}
 
-	public List<PageGallerySlider> getGallerySilder() {
-		return gallerySilder;
+	public List<PageGallerySlider> getGalleryData() {
+		return galleryData;
 	}
 
-	public void setGallerySilder(List<PageGallerySlider> gallerySilder) {
-		this.gallerySilder = gallerySilder;
+	public void setGalleryData(List<PageGallerySlider> galleryData) {
+		this.galleryData = galleryData;
 	}
+
+	
 }
