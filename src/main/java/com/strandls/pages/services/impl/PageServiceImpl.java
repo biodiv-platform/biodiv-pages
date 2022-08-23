@@ -115,6 +115,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 					entity.setAuthorId(page.getAutherId());
 					pageGallerySilderDao.update(gallery);
 				} else {
+					gallery.setDisplayOrder(gallery.getDisplayOrder());
+					gallery.setFileName(gallery.getFileName());
 					gallery.setPageId(page.getId());
 					gallery.setAuthorId(page.getAutherId());
 					pageGallerySilderDao.save(gallery);

@@ -36,7 +36,7 @@ public class PageGallerySlider {
 		this.id = id;
 	}
 
-	@Column(name = "page_id", nullable = false)
+	@Column(name = "page_id")
 	public Long getPageId() {
 		return pageId;
 	}
