@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.PageGallerySlider;
+import com.strandls.pages.pojo.PageType;
 
 public class PageShowMinimal {
 
@@ -12,6 +13,8 @@ public class PageShowMinimal {
 	private String content;
 	private String description;
 	private String url;
+	private PageType pageType;
+	
 	private List<PageGallerySlider> galleryData;
 
 	public PageShowMinimal() {
@@ -25,10 +28,11 @@ public class PageShowMinimal {
 		this.galleryData = newsletter.getGallerySilder();
 		this.url = newsletter.getUrl();
 		this.description = newsletter.getDescription();
+		this.pageType = newsletter.getPageType();
 	}
 
 	public PageShowMinimal(Long id, String title, String content, List<PageGallerySlider> galleryData,
-			String description, String url) {
+			String description, String url,PageType pageType) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -36,6 +40,7 @@ public class PageShowMinimal {
 		this.galleryData = galleryData;
 		this.url = url;
 		this.description = description;
+		this.pageType = pageType;
 	}
 
 	public Long getId() {
@@ -84,5 +89,13 @@ public class PageShowMinimal {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public PageType getPageType() {
+		return pageType;
+	}
+
+	public void setPageType(PageType pageType) {
+		this.pageType = pageType;
 	}
 }
