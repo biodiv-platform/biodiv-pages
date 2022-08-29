@@ -17,5 +17,6 @@ public class PagesDaoModule extends AbstractModule {
 	protected void configure() {
 		bind(NewsletterDao.class).in(Scopes.SINGLETON);
 		bind(PageDao.class).in(Scopes.SINGLETON);
+		bind(PageGallerySilderDao.class).in(Scopes.SINGLETON);
 	}
 }

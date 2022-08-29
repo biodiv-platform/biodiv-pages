@@ -1,8 +1,10 @@
 package com.strandls.pages.pojo.response;
 
 import java.sql.Timestamp;
+import java.util.List;
 
 import com.strandls.pages.pojo.Page;
+import com.strandls.pages.pojo.PageGallerySlider;
 import com.strandls.pages.pojo.PageType;
 import com.strandls.pages.util.AuthUtility;
 import com.strandls.user.pojo.User;
@@ -26,6 +28,7 @@ public class PageShowFull {
 	private Timestamp date;
 	private Boolean sticky;
 	private Boolean showInFooter;
+	private List<PageGallerySlider> galleryData;
 
 	public PageShowFull() {
 		super();
@@ -49,6 +52,7 @@ public class PageShowFull {
 		this.date = page.getDate();
 		this.sticky = page.getSticky();
 		this.showInFooter = page.getShowInFooter();
+		this.galleryData = page.getGallerySilder();
 	}
 
 	public Long getId() {
@@ -153,5 +157,13 @@ public class PageShowFull {
 
 	public void setShowInFooter(Boolean showInFooter) {
 		this.showInFooter = showInFooter;
+	}
+
+	public List<PageGallerySlider> getGalleryData() {
+		return galleryData;
+	}
+
+	public void setGalleryData(List<PageGallerySlider> galleryData) {
+		this.galleryData = galleryData;
 	}
 }
