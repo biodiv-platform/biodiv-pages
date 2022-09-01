@@ -11,6 +11,7 @@ public class PageUpdate {
 	private String title;
 	private String content;
 	private String description;
+	private String socialPreview;
 	private PageType pageType;
 	private String url;
 	private Boolean sticky;
@@ -51,6 +52,15 @@ public class PageUpdate {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	
+	public String getSocialPreview() {
+		return socialPreview;
+	}
+
+	public void setSocialPreview(String socialPreview) {
+		this.socialPreview = socialPreview;
 	}
 
 	public PageType getPageType() {

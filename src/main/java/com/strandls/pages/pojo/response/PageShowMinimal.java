@@ -12,6 +12,8 @@ public class PageShowMinimal {
 	private String title;
 	private String content;
 	private String description;
+	private String socialPreview;
+
 	private String url;
 	private PageType pageType;
 	
@@ -28,11 +30,12 @@ public class PageShowMinimal {
 		this.galleryData = newsletter.getGallerySilder();
 		this.url = newsletter.getUrl();
 		this.description = newsletter.getDescription();
+		this.setSocialPreview(newsletter.getSocialPreview());
 		this.pageType = newsletter.getPageType();
 	}
 
 	public PageShowMinimal(Long id, String title, String content, List<PageGallerySlider> galleryData,
-			String description, String url,PageType pageType) {
+			String description, String url,String socialPreview ,PageType pageType) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -40,6 +43,7 @@ public class PageShowMinimal {
 		this.galleryData = galleryData;
 		this.url = url;
 		this.description = description;
+		this.setSocialPreview(socialPreview);
 		this.pageType = pageType;
 	}
 
@@ -81,6 +85,14 @@ public class PageShowMinimal {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+
+	public String getSocialPreview() {
+		return socialPreview;
+	}
+
+	public void setSocialPreview(String socialPreview) {
+		this.socialPreview = socialPreview;
 	}
 
 	public String getUrl() {

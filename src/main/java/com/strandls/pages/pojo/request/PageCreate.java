@@ -11,6 +11,7 @@ public class PageCreate {
 	private String title;
 	private String content;
 	private String description;
+	private String socialPreview;
 	private Long userGroupId;
 	private Long languageId;
 	private Long parentId;
@@ -50,6 +51,15 @@ public class PageCreate {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+
+	public String getSocialPreview() {
+		return socialPreview;
+	}
+
+	public void setSocialPreview(String socialPreview) {
+		this.socialPreview = socialPreview;
 	}
 
 	public Long getUserGroupId() {
