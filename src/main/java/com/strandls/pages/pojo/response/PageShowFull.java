@@ -16,6 +16,8 @@ public class PageShowFull {
 	private String title;
 	private String content;
 	private String description;
+	private String socialPreview;
+
 
 	private UserIbp userIbp;
 	private Long languageId;
@@ -53,6 +55,7 @@ public class PageShowFull {
 		this.sticky = page.getSticky();
 		this.showInFooter = page.getShowInFooter();
 		this.galleryData = page.getGallerySilder();
+		this.socialPreview = page.getSocialPreview();
 	}
 
 	public Long getId() {
@@ -165,5 +168,13 @@ public class PageShowFull {
 
 	public void setGalleryData(List<PageGallerySlider> galleryData) {
 		this.galleryData = galleryData;
+	}
+
+	public String getSocialPreview() {
+		return socialPreview;
+	}
+
+	public void setSocialPreview(String socialPreview) {
+		this.socialPreview = socialPreview;
 	}
 }
