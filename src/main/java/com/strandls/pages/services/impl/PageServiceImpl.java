@@ -69,6 +69,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setDate(pageCreate.getDate());
 		page.setSticky(pageCreate.getSticky());
 		page.setShowInFooter(pageCreate.getShowInFooter());
+		page.setSocialPreview(pageCreate.getSocialPreview());
 		page.setIsDeleted(false);
 		page.setPageIndex(0); // Setting the value 0 just because it is non null.
 
@@ -101,6 +102,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setUrl(pageUpdate.getUrl());
 		page.setSticky(pageUpdate.getSticky());
 		page.setShowInFooter(pageUpdate.getShowInFooter());
+		page.setSocialPreview(pageUpdate.getSocialPreview());
 
 //		update gallery slider if contains Id update else create new record
 

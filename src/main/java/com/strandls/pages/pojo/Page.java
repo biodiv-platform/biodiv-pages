@@ -39,6 +39,8 @@ public class Page implements Serializable {
 	private String title;
 	private String content;
 	private String description;
+	
+	private String socialPreview;
 
 	private Long userGroupId;
 	private Long languageId;
@@ -104,6 +106,17 @@ public class Page implements Serializable {
 
 	public void setDescription(String description) {
 		this.description = description;
+	}
+	
+	
+	@Column(name = "social_preview")
+	@Type(type = "text")
+	public String getSocialPreview() {
+		return socialPreview;
+	}
+
+	public void setSocialPreview(String socialPreview) {
+		this.socialPreview = socialPreview;
 	}
 
 	@Column(name = "user_group_id")
