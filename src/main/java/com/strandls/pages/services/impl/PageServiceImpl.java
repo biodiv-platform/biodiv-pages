@@ -13,6 +13,10 @@ import javax.ws.rs.core.HttpHeaders;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.strandls.activity.controller.ActivitySerivceApi;
+import com.strandls.activity.pojo.Activity;
+import com.strandls.activity.pojo.CommentLoggingData;
+import com.strandls.pages.Headers;
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
 import com.strandls.pages.dao.PageGallerySilderDao;
@@ -46,6 +50,12 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	@Inject
 	private UserGroupSerivceApi userGroupSerivceApi;
+
+	@Inject
+	private Headers headers;
+
+	@Inject
+	private ActivitySerivceApi activityService;
 
 	@Inject
 	public PageServiceImpl(PageDao dao) {
@@ -331,5 +341,17 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 		return null;
 
+	}
+
+	@Override
+	public Activity addPageComment(HttpServletRequest request, CommentLoggingData comment) {
+		try {
+			activityService = headers.addActivityHeaders(activityService, request.getHeader(HttpHeaders.AUTHORIZATION));
+			Activity result = activityService.addComment("page", comment);
+			return result;
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return null;
 	}
 }

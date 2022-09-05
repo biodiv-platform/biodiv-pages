@@ -24,6 +24,11 @@ public class PageGallerySlider {
 	private String fileName;
 	private Long authorId;
 	private Long displayOrder;
+	private  String  caption;
+	private String attribution;
+	private Long licenseId;
+
+	
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -70,5 +75,33 @@ public class PageGallerySlider {
 
 	public void setDisplayOrder(Long displayOrder) {
 		this.displayOrder = displayOrder;
+	}
+	
+	
+	@Column(name = "caption")
+	public String getCaption() {
+		return caption;
+	}
+
+	public void setCaption(String caption) {
+		this.caption = caption;
+	}
+
+	@Column(name = "attribution")
+	public String getAttribution() {
+		return attribution;
+	}
+
+	public void setAttribution(String attribution) {
+		this.attribution = attribution;
+	}
+
+	@Column(name = "license_id")
+	public Long getLicenseId() {
+		return licenseId;
+	}
+
+	public void setLicenseId(Long licenseId) {
+		this.licenseId = licenseId;
 	}
 }

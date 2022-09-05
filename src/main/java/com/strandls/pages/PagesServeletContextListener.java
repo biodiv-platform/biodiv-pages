@@ -28,6 +28,7 @@ import com.google.inject.Injector;
 import com.google.inject.Scopes;
 import com.google.inject.servlet.GuiceServletContextListener;
 import com.google.inject.servlet.ServletModule;
+import com.strandls.activity.controller.ActivitySerivceApi;
 import com.strandls.pages.controllers.PagesControllerModule;
 import com.strandls.pages.dao.PagesDaoModule;
 import com.strandls.pages.services.impl.PagesServiceModule;
@@ -74,6 +75,7 @@ public class PagesServeletContextListener extends GuiceServletContextListener {
 
 				bind(UserServiceApi.class).in(Scopes.SINGLETON);
 				bind(SessionFactory.class).toInstance(sessionFactory);
+				bind(ActivitySerivceApi.class).in(Scopes.SINGLETON);
 				bind(ServletContainer.class).in(Scopes.SINGLETON);
 
 				serve("/api/*").with(ServletContainer.class, props);
