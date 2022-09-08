@@ -20,5 +20,7 @@ public class ApiConstants {
 	public static final String GALLERY = "/gallery";
 	public static final String REMOVE = "/remove";
 	public static final String REORDERING = "/reordering";
+	public static final String COMMENT = "/comment";
+	public static final String ADD = "/add";
 
 }

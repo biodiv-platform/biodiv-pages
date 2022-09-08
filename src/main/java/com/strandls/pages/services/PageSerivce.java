@@ -7,6 +7,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.strandls.activity.pojo.Activity;
+import com.strandls.activity.pojo.CommentLoggingData;
 import com.strandls.pages.pojo.Page;
 import com.strandls.pages.pojo.request.PageCreate;
 import com.strandls.pages.pojo.request.PageTreeUpdate;
@@ -50,4 +52,6 @@ public interface PageSerivce {
 	public Page reorderingPageGallerySlider(Long pageId, List<ReorderingGalleryPage> reorderingGalleryPage);
 
 	public Page removePageGallerySlider(Long gallerySilderId, Long pageId);
+
+	public Activity addPageComment(HttpServletRequest request, CommentLoggingData comment);
 }
