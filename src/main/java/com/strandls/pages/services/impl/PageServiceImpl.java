@@ -16,6 +16,8 @@ import org.slf4j.LoggerFactory;
 import com.strandls.activity.controller.ActivitySerivceApi;
 import com.strandls.activity.pojo.Activity;
 import com.strandls.activity.pojo.CommentLoggingData;
+import com.strandls.activity.pojo.MailData;
+import com.strandls.activity.pojo.PageMailData;
 import com.strandls.pages.Headers;
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
@@ -58,6 +60,9 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	private ActivitySerivceApi activityService;
 
 	@Inject
+	private LogActivities logActivities;
+
+	@Inject
 	public PageServiceImpl(PageDao dao) {
 		super(dao);
 	}
@@ -96,6 +101,10 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			}
 
 		}
+		
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
+				page.getId(), "page", null, "Page created", generatePageMailData(page.getId()));
+		
 
 		return getPageWithGalleryData(page);
 	}
@@ -143,6 +152,9 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 			}
 
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
+				page.getId(), "page", null, "Page updated", generatePageMailData(page.getId()));
+		
 		return getPageWithGalleryData(update(page));
 	}
 
@@ -294,6 +306,10 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	public Page deletePage(HttpServletRequest request, Long pageId) {
 		Page page = findById(pageId);
 		page.setIsDeleted(true);
+		
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
+				page.getId(), "page", null, "Page Deleted", generatePageMailData(page.getId()));
+		
 		return update(page);
 	}
 
@@ -349,9 +365,23 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	}
 
+	private MailData generatePageMailData(Long pageId) {
+		MailData mailData = new MailData();
+		PageMailData pageMailData = new PageMailData();
+		Page page = pageDao.findById(pageId);
+		pageMailData.setAuthorId(page.getAutherId());
+		pageMailData.setCreatedOn(null);
+		pageMailData.setPageId(pageId);
+		pageMailData.setTitle(page.getTitle());
+
+		return mailData;
+
+	}
+
 	@Override
 	public Activity addPageComment(HttpServletRequest request, CommentLoggingData comment) {
 		try {
+			comment.setMailData(generatePageMailData(comment.getRootHolderId()));
 			activityService = headers.addActivityHeaders(activityService, request.getHeader(HttpHeaders.AUTHORIZATION));
 			Activity result = activityService.addComment("page", comment);
 			return result;
