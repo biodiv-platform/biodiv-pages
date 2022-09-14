@@ -373,6 +373,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		pageMailData.setCreatedOn(null);
 		pageMailData.setPageId(pageId);
 		pageMailData.setTitle(page.getTitle());
+		mailData.setPageMailData(pageMailData);
 
 		return mailData;
 
