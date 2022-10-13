@@ -16,6 +16,7 @@ public class PageShowMinimal {
 
 	private String url;
 	private PageType pageType;
+	private Boolean isDeleted;
 	
 	private List<PageGallerySlider> galleryData;
 
@@ -32,10 +33,11 @@ public class PageShowMinimal {
 		this.description = newsletter.getDescription();
 		this.setSocialPreview(newsletter.getSocialPreview());
 		this.pageType = newsletter.getPageType();
+		this.isDeleted = newsletter.getIsDeleted();
 	}
 
 	public PageShowMinimal(Long id, String title, String content, List<PageGallerySlider> galleryData,
-			String description, String url,String socialPreview ,PageType pageType) {
+			String description, String url,String socialPreview ,PageType pageType, Boolean isDeleted) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -45,6 +47,7 @@ public class PageShowMinimal {
 		this.description = description;
 		this.setSocialPreview(socialPreview);
 		this.pageType = pageType;
+		this.isDeleted = isDeleted;
 	}
 
 	public Long getId() {
@@ -109,5 +112,13 @@ public class PageShowMinimal {
 
 	public void setPageType(PageType pageType) {
 		this.pageType = pageType;
+	}
+
+	public Boolean getIsDeleted() {
+		return isDeleted;
+	}
+
+	public void setIsDeleted(Boolean isDeleted) {
+		this.isDeleted = isDeleted;
 	}
 }
