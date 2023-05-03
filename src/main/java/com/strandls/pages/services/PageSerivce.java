@@ -54,4 +54,6 @@ public interface PageSerivce {
 	public Page removePageGallerySlider(Long gallerySilderId, Long pageId);
 
 	public Activity addPageComment(HttpServletRequest request, CommentLoggingData comment);
+
+	public Activity removePagesComment(HttpServletRequest request, CommentLoggingData comment, String commentId);
 }
