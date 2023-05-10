@@ -18,7 +18,6 @@ public class PageShowFull {
 	private String description;
 	private String socialPreview;
 
-
 	private UserIbp userIbp;
 	private Long languageId;
 	private PageType pageType;
@@ -31,6 +30,7 @@ public class PageShowFull {
 	private Boolean sticky;
 	private Boolean showInFooter;
 	private List<PageGallerySlider> galleryData;
+	private Boolean allowComments;
 
 	public PageShowFull() {
 		super();
@@ -56,6 +56,8 @@ public class PageShowFull {
 		this.showInFooter = page.getShowInFooter();
 		this.galleryData = page.getGallerySilder();
 		this.socialPreview = page.getSocialPreview();
+		this.allowComments = page.getAllowComments();
+
 	}
 
 	public Long getId() {
@@ -177,4 +179,13 @@ public class PageShowFull {
 	public void setSocialPreview(String socialPreview) {
 		this.socialPreview = socialPreview;
 	}
+
+	public Boolean getAllowComments() {
+		return allowComments;
+	}
+
+	public void setAllowComments(Boolean allowComments) {
+		this.allowComments = allowComments;
+	}
+
 }

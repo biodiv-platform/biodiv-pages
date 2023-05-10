@@ -7,7 +7,7 @@ import com.strandls.pages.pojo.PageGallerySlider;
 import com.strandls.pages.pojo.PageType;
 
 public class PageCreate {
-	
+
 	private String title;
 	private String content;
 	private String description;
@@ -15,7 +15,7 @@ public class PageCreate {
 	private Long userGroupId;
 	private Long languageId;
 	private Long parentId;
-	private Integer pageIndex; 
+	private Integer pageIndex;
 	private PageType pageType;
 	private String url;
 	private Long autherId;
@@ -24,6 +24,7 @@ public class PageCreate {
 	private Boolean Sticky;
 	private Boolean showInFooter;
 	private List<PageGallerySlider> galleryData;
+	private Boolean allowComments;
 
 	public PageCreate() {
 		super();
@@ -52,7 +53,6 @@ public class PageCreate {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
 
 	public String getSocialPreview() {
 		return socialPreview;
@@ -158,5 +158,12 @@ public class PageCreate {
 		this.galleryData = galleryData;
 	}
 
-	
+	public Boolean getAllowComments() {
+		return allowComments;
+	}
+
+	public void setAllowComments(Boolean allowComments) {
+		this.allowComments = allowComments;
+	}
+
 }
