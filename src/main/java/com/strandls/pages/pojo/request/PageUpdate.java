@@ -17,6 +17,7 @@ public class PageUpdate {
 	private Boolean sticky;
 	private Boolean showInFooter;
 	private List<PageGallerySlider> galleryData;
+	private Boolean allowComments;
 
 	public PageUpdate() {
 		super();
@@ -54,7 +55,6 @@ public class PageUpdate {
 		this.description = description;
 	}
 
-	
 	public String getSocialPreview() {
 		return socialPreview;
 	}
@@ -103,6 +103,12 @@ public class PageUpdate {
 		this.galleryData = galleryData;
 	}
 
-	
+	public Boolean getAllowComments() {
+		return allowComments;
+	}
+
+	public void setAllowComments(Boolean allowComments) {
+		this.allowComments = allowComments;
+	}
 
 }

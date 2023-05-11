@@ -88,6 +88,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setIsDeleted(false);
 		page.setPageIndex(0); // Setting the value 0 just because it is non null.
 
+		page.setAllowComments(pageCreate.getAllowComments());
+
 		page = save(page);
 
 		page.setPageIndex(page.getId().intValue());
@@ -101,10 +103,9 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			}
 
 		}
-		
-		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
-				page.getId(), "page", null, "Page created", generatePageMailData(page.getId()));
-		
+
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(), page.getId(),
+				"page", null, "Page created", generatePageMailData(page.getId()));
 
 		return getPageWithGalleryData(page);
 	}
@@ -122,6 +123,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setSticky(pageUpdate.getSticky());
 		page.setShowInFooter(pageUpdate.getShowInFooter());
 		page.setSocialPreview(pageUpdate.getSocialPreview());
+		page.setAllowComments(pageUpdate.getAllowComments());
 
 //		update gallery slider if contains Id update else create new record
 
@@ -152,9 +154,9 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 			}
 
-		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
-				page.getId(), "page", null, "Page updated", generatePageMailData(page.getId()));
-		
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(), page.getId(),
+				"page", null, "Page updated", generatePageMailData(page.getId()));
+
 		return getPageWithGalleryData(update(page));
 	}
 
@@ -306,10 +308,10 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	public Page deletePage(HttpServletRequest request, Long pageId) {
 		Page page = findById(pageId);
 		page.setIsDeleted(true);
-		
-		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(),
-				page.getId(), "page", null, "Page Deleted", generatePageMailData(page.getId()));
-		
+
+		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(), page.getId(),
+				"page", null, "Page Deleted", generatePageMailData(page.getId()));
+
 		return update(page);
 	}
 

@@ -39,7 +39,7 @@ public class Page implements Serializable {
 	private String title;
 	private String content;
 	private String description;
-	
+
 	private String socialPreview;
 
 	private Long userGroupId;
@@ -59,6 +59,7 @@ public class Page implements Serializable {
 	private Boolean showInFooter;
 
 	private Boolean isDeleted;
+	private Boolean allowComments;
 
 	private List<PageGallerySlider> gallerySilder;
 
@@ -107,8 +108,7 @@ public class Page implements Serializable {
 	public void setDescription(String description) {
 		this.description = description;
 	}
-	
-	
+
 	@Column(name = "social_preview")
 	@Type(type = "text")
 	public String getSocialPreview() {
@@ -236,4 +236,14 @@ public class Page implements Serializable {
 	public void setGallerySilder(List<PageGallerySlider> gallerySilder) {
 		this.gallerySilder = gallerySilder;
 	}
+
+	@Column(name = "allow_comments", columnDefinition = "boolean default true")
+	public Boolean getAllowComments() {
+		return allowComments;
+	}
+
+	public void setAllowComments(Boolean allowComments) {
+		this.allowComments = allowComments;
+	}
+
 }
