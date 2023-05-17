@@ -386,7 +386,19 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		try {
 			comment.setMailData(generatePageMailData(comment.getRootHolderId()));
 			activityService = headers.addActivityHeaders(activityService, request.getHeader(HttpHeaders.AUTHORIZATION));
-			Activity result = activityService.addComment("page", comment);
+			return activityService.addComment("page", comment);
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return null;
+	}
+	
+	@Override
+	public Activity removePagesComment(HttpServletRequest request, CommentLoggingData comment, String commentId) {
+		try {
+			comment.setMailData(generatePageMailData(comment.getRootHolderId()));
+			activityService = headers.addActivityHeaders(activityService, request.getHeader(HttpHeaders.AUTHORIZATION));
+			Activity result = activityService.deleteComment("page", commentId, comment);
 			return result;
 		} catch (Exception e) {
 			logger.error(e.getMessage());

@@ -9,8 +9,9 @@ package com.strandls.pages;
  *
  */
 public class ApiConstants {
-	
-	private ApiConstants() {}
+
+	private ApiConstants() {
+	}
 
 	public static final String V1 = "/v1";
 	public static final String PING = "/ping";
@@ -22,5 +23,6 @@ public class ApiConstants {
 	public static final String REORDERING = "/reordering";
 	public static final String COMMENT = "/comment";
 	public static final String ADD = "/add";
+	public static final String DELETE = "/delete";
 
 }
