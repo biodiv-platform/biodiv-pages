@@ -56,4 +56,6 @@ public interface PageSerivce {
 	public Activity addPageComment(HttpServletRequest request, CommentLoggingData comment);
 
 	public Activity removePagesComment(HttpServletRequest request, CommentLoggingData comment, String commentId);
+
+	public Boolean bulkSoftDeletePagesByUgId(HttpServletRequest request, String usergroupId);
 }

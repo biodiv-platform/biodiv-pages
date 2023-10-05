@@ -36,6 +36,7 @@ import com.strandls.pages.pojo.response.PageShowFull;
 import com.strandls.pages.pojo.response.PageShowMinimal;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.pages.services.PageSerivce;
+import com.strandls.pages.services.impl.PageServiceImpl;
 import com.strandls.user.controller.UserServiceApi;
 import com.strandls.user.pojo.User;
 
@@ -335,6 +336,25 @@ public class PageController {
 			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 
+	}
+
+	@PUT
+	@Path(ApiConstants.DELETE + ApiConstants.ALL + "/{userGroupId}")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+
+	@ValidateUser
+	@ApiOperation(value = "soft deletes all pages for a userGroup", notes = "Returns true if deleted successfully ", response = Boolean.class)
+	@ApiResponses(value = {
+			@ApiResponse(code = 400, message = "Unable to delete pages for the usergroup", response = String.class) })
+	public Response deleteAllPagesforUserGroup(@Context HttpServletRequest request,
+			@PathParam("userGroupId") String userGroupId) {
+		try {
+			Boolean result = pageService.bulkSoftDeletePagesByUgId(request, userGroupId);
+			return Response.status(Status.OK).entity(result).build();
+		} catch (Exception e) {
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
+		}
 	}
 
 }

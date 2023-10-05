@@ -10,6 +10,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.HttpHeaders;
 
+import org.pac4j.core.profile.CommonProfile;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -18,6 +19,7 @@ import com.strandls.activity.pojo.Activity;
 import com.strandls.activity.pojo.CommentLoggingData;
 import com.strandls.activity.pojo.MailData;
 import com.strandls.activity.pojo.PageMailData;
+import com.strandls.authentication_utility.util.AuthUtil;
 import com.strandls.pages.Headers;
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.dao.PageDao;
@@ -37,6 +39,8 @@ import com.strandls.pages.util.AbstractService;
 import com.strandls.pages.util.AuthUtility;
 import com.strandls.userGroup.ApiException;
 import com.strandls.userGroup.controller.UserGroupSerivceApi;
+
+import net.minidev.json.JSONArray;
 
 public class PageServiceImpl extends AbstractService<Page> implements PageSerivce {
 	private final Logger logger = LoggerFactory.getLogger(PageServiceImpl.class);
@@ -392,7 +396,7 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Activity removePagesComment(HttpServletRequest request, CommentLoggingData comment, String commentId) {
 		try {
@@ -404,5 +408,20 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 			logger.error(e.getMessage());
 		}
 		return null;
+	}
+
+	@Override
+	public Boolean bulkSoftDeletePagesByUgId(HttpServletRequest request, String usergroupId) {
+		try {
+			CommonProfile profile = AuthUtil.getProfileFromRequest(request);
+			JSONArray roles = (JSONArray) profile.getAttribute("roles");
+			if (roles.contains("ROLE_ADMIN")) {
+				pageDao.deletePagesByUgId(Long.parseLong(usergroupId));
+				return true;
+			}
+		} catch (Exception e) {
+			logger.error(e.getMessage());
+		}
+		return false;
 	}
 }
