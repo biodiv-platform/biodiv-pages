@@ -23,6 +23,8 @@ public class PageCreate {
 	private Timestamp date;
 	private Boolean Sticky;
 	private Boolean showInFooter;
+	private Boolean showInPrimaryHeader;
+	private Boolean showInSecondaryHeader;
 	private List<PageGallerySlider> galleryData;
 	private Boolean allowComments;
 
@@ -164,6 +166,22 @@ public class PageCreate {
 
 	public void setAllowComments(Boolean allowComments) {
 		this.allowComments = allowComments;
+	}
+
+	public Boolean getShowInPrimaryHeader() {
+		return showInPrimaryHeader;
+	}
+
+	public void setShowInPrimaryHeader(Boolean showInPrimaryHeader) {
+		this.showInPrimaryHeader = showInPrimaryHeader;
+	}
+
+	public Boolean getShowInSecondaryHeader() {
+		return showInSecondaryHeader;
+	}
+
+	public void setShowInSecondaryHeader(Boolean showInSecondaryHeader) {
+		this.showInSecondaryHeader = showInSecondaryHeader;
 	}
 
 }
