@@ -29,6 +29,8 @@ public class PageShowFull {
 	private Timestamp date;
 	private Boolean sticky;
 	private Boolean showInFooter;
+	private Boolean showInPrimaryHeader;
+	private Boolean showInSecondaryHeader;
 	private List<PageGallerySlider> galleryData;
 	private Boolean allowComments;
 
@@ -54,6 +56,8 @@ public class PageShowFull {
 		this.date = page.getDate();
 		this.sticky = page.getSticky();
 		this.showInFooter = page.getShowInFooter();
+		this.showInPrimaryHeader = page.getShowInPrimaryHeader();
+		this.showInSecondaryHeader = page.getShowInSecondaryHeader();
 		this.galleryData = page.getGallerySilder();
 		this.socialPreview = page.getSocialPreview();
 		this.allowComments = page.getAllowComments();
@@ -186,6 +190,22 @@ public class PageShowFull {
 
 	public void setAllowComments(Boolean allowComments) {
 		this.allowComments = allowComments;
+	}
+
+	public Boolean getShowInPrimaryHeader() {
+		return showInPrimaryHeader;
+	}
+
+	public void setShowInPrimaryHeader(Boolean showInPrimaryHeader) {
+		this.showInPrimaryHeader = showInPrimaryHeader;
+	}
+
+	public Boolean getShowInSecondaryHeader() {
+		return showInSecondaryHeader;
+	}
+
+	public void setShowInSecondaryHeader(Boolean showInSecondaryHeader) {
+		this.showInSecondaryHeader = showInSecondaryHeader;
 	}
 
 }
