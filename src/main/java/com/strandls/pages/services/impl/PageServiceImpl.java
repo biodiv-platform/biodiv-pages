@@ -84,8 +84,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setDate(pageCreate.getDate());
 		page.setSticky(pageCreate.getSticky());
 		page.setShowInFooter(pageCreate.getShowInFooter());
-		page.setShowInPrimaryHeader(pageCreate.getShowInPrimaryHeader());
-		page.setShowInSecondaryHeader(pageCreate.getShowInSecondaryHeader());
+		page.setShowInPrimaryMenu(pageCreate.getShowInPrimaryMenu());
+		page.setShowInSecondaryMenu(pageCreate.getShowInSecondaryMenu());
 		page.setSocialPreview(pageCreate.getSocialPreview());
 		page.setIsDeleted(false);
 		page.setPageIndex(0); // Setting the value 0 just because it is non null.
@@ -124,8 +124,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		page.setUrl(pageUpdate.getUrl());
 		page.setSticky(pageUpdate.getSticky());
 		page.setShowInFooter(pageUpdate.getShowInFooter());
-		page.setShowInPrimaryHeader(pageUpdate.getShowInPrimaryHeader());
-		page.setShowInSecondaryHeader(pageUpdate.getShowInSecondaryHeader());
+		page.setShowInPrimaryMenu(pageUpdate.getShowInPrimaryMenu());
+		page.setShowInSecondaryMenu(pageUpdate.getShowInSecondaryMenu());
 		page.setSocialPreview(pageUpdate.getSocialPreview());
 		page.setAllowComments(pageUpdate.getAllowComments());
 

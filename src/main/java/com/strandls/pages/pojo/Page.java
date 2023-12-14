@@ -249,20 +249,20 @@ public class Page implements Serializable {
 	}
 
 	@Column(name = "show_in_primary_menu", columnDefinition = "boolean default false")
-	public Boolean getShowInPrimaryHeader() {
+	public Boolean getShowInPrimaryMenu() {
 		return showInPrimaryMenu;
 	}
 
-	public void setShowInPrimaryHeader(Boolean showInPrimaryMenu) {
+	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
 		this.showInPrimaryMenu = showInPrimaryMenu;
 	}
 
 	@Column(name = "show_in_secondary_menu", columnDefinition = "boolean default false")
-	public Boolean getShowInSecondaryHeader() {
+	public Boolean getShowInSecondaryMenu() {
 		return showInSecondaryMenu;
 	}
 
-	public void setShowInSecondaryHeader(Boolean showInSecondaryMenu) {
+	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
 		this.showInSecondaryMenu = showInSecondaryMenu;
 	}
 

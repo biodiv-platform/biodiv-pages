@@ -11,8 +11,8 @@ public class PageTree {
 	private Long parentId;
 	private Integer pageIndex;
 	private List<PageTree> children;
-	private Boolean showInPrimaryHeader;
-	private Boolean showInSecondaryHeader;
+	private Boolean showInPrimaryMenu;
+	private Boolean showInSecondaryMenu;
 
 	public PageTree() {
 		super();
@@ -25,20 +25,20 @@ public class PageTree {
 		this.parentId = page.getParentId();
 		this.pageIndex = page.getPageIndex();
 		this.children = new PageArrayList();
-		this.showInPrimaryHeader = page.getShowInPrimaryHeader();
-		this.showInSecondaryHeader = page.getShowInSecondaryHeader();
+		this.showInPrimaryMenu = page.getShowInPrimaryMenu();
+		this.showInSecondaryMenu = page.getShowInSecondaryMenu();
 	}
 
 	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs,
-			Boolean showInPrimaryHeader, Boolean showInSecondaryHeader) {
+			Boolean showInPrimaryMenu, Boolean showInSecondaryMenu) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.parentId = parentId;
 		this.pageIndex = index;
 		this.children = childs;
-		this.showInPrimaryHeader = showInPrimaryHeader;
-		this.showInSecondaryHeader = showInSecondaryHeader;
+		this.showInPrimaryMenu = showInPrimaryMenu;
+		this.showInSecondaryMenu = showInSecondaryMenu;
 	}
 
 	public Long getId() {
@@ -81,19 +81,19 @@ public class PageTree {
 		this.children = children;
 	}
 
-	public Boolean getShowInPrimaryHeader() {
-		return showInPrimaryHeader;
+	public Boolean getShowInPrimaryMenu() {
+		return showInPrimaryMenu;
 	}
 
-	public void setShowInPrimaryHeader(Boolean showInPrimaryHeader) {
-		this.showInPrimaryHeader = showInPrimaryHeader;
+	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
+		this.showInPrimaryMenu = showInPrimaryMenu;
 	}
 
-	public Boolean getShowInSecondaryHeader() {
-		return showInSecondaryHeader;
+	public Boolean getShowInSecondaryMenu() {
+		return showInSecondaryMenu;
 	}
 
-	public void setShowInSecondaryHeader(Boolean showInSecondaryHeader) {
-		this.showInSecondaryHeader = showInSecondaryHeader;
+	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
+		this.showInSecondaryMenu = showInSecondaryMenu;
 	}
 }

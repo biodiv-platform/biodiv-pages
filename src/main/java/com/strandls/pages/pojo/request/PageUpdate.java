@@ -16,8 +16,8 @@ public class PageUpdate {
 	private String url;
 	private Boolean sticky;
 	private Boolean showInFooter;
-	private Boolean showInPrimaryHeader;
-	private Boolean showInSecondaryHeader;
+	private Boolean showInPrimaryMenu;
+	private Boolean showInSecondaryMenu;
 	private List<PageGallerySlider> galleryData;
 	private Boolean allowComments;
 
@@ -113,20 +113,20 @@ public class PageUpdate {
 		this.allowComments = allowComments;
 	}
 
-	public Boolean getShowInPrimaryHeader() {
-		return showInPrimaryHeader;
+	public Boolean getShowInPrimaryMenu() {
+		return showInPrimaryMenu;
 	}
 
-	public void setShowInPrimaryHeader(Boolean showInPrimaryHeader) {
-		this.showInPrimaryHeader = showInPrimaryHeader;
+	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
+		this.showInPrimaryMenu = showInPrimaryMenu;
 	}
 
-	public Boolean getShowInSecondaryHeader() {
-		return showInSecondaryHeader;
+	public Boolean getShowInSecondaryMenu() {
+		return showInSecondaryMenu;
 	}
 
-	public void setShowInSecondaryHeader(Boolean showInSecondaryHeader) {
-		this.showInSecondaryHeader = showInSecondaryHeader;
+	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
+		this.showInSecondaryMenu = showInSecondaryMenu;
 	}
 
 }
