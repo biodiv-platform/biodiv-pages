@@ -13,6 +13,7 @@ public class PageTree {
 	private List<PageTree> children;
 	private Boolean showInPrimaryMenu;
 	private Boolean showInSecondaryMenu;
+	private Boolean showInFooter;
 
 	public PageTree() {
 		super();
@@ -27,10 +28,11 @@ public class PageTree {
 		this.children = new PageArrayList();
 		this.showInPrimaryMenu = page.getShowInPrimaryMenu();
 		this.showInSecondaryMenu = page.getShowInSecondaryMenu();
+		this.setShowInFooter(page.getShowInFooter());
 	}
 
 	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs,
-			Boolean showInPrimaryMenu, Boolean showInSecondaryMenu) {
+			Boolean showInPrimaryMenu, Boolean showInSecondaryMenu, Boolean showInFooter) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -39,6 +41,7 @@ public class PageTree {
 		this.children = childs;
 		this.showInPrimaryMenu = showInPrimaryMenu;
 		this.showInSecondaryMenu = showInSecondaryMenu;
+		this.setShowInFooter(showInFooter);
 	}
 
 	public Long getId() {
@@ -95,5 +98,13 @@ public class PageTree {
 
 	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
 		this.showInSecondaryMenu = showInSecondaryMenu;
+	}
+
+	public Boolean getShowInFooter() {
+		return showInFooter;
+	}
+
+	public void setShowInFooter(Boolean showInFooter) {
+		this.showInFooter = showInFooter;
 	}
 }
