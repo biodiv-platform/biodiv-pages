@@ -16,6 +16,8 @@ public class PageUpdate {
 	private String url;
 	private Boolean sticky;
 	private Boolean showInFooter;
+	private Boolean showInPrimaryMenu;
+	private Boolean showInSecondaryMenu;
 	private List<PageGallerySlider> galleryData;
 	private Boolean allowComments;
 
@@ -109,6 +111,22 @@ public class PageUpdate {
 
 	public void setAllowComments(Boolean allowComments) {
 		this.allowComments = allowComments;
+	}
+
+	public Boolean getShowInPrimaryMenu() {
+		return showInPrimaryMenu;
+	}
+
+	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
+		this.showInPrimaryMenu = showInPrimaryMenu;
+	}
+
+	public Boolean getShowInSecondaryMenu() {
+		return showInSecondaryMenu;
+	}
+
+	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
+		this.showInSecondaryMenu = showInSecondaryMenu;
 	}
 
 }
