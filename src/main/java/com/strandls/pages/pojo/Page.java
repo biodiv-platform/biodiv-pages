@@ -57,8 +57,7 @@ public class Page implements Serializable {
 	private Timestamp date;
 	private Boolean sticky;
 	private Boolean showInFooter;
-	private Boolean showInPrimaryMenu;
-	private Boolean showInSecondaryMenu;
+	private Boolean showInMenu;
 
 	private Boolean isDeleted;
 	private Boolean allowComments;
@@ -248,22 +247,13 @@ public class Page implements Serializable {
 		this.allowComments = allowComments;
 	}
 
-	@Column(name = "show_in_primary_menu", columnDefinition = "boolean default false")
-	public Boolean getShowInPrimaryMenu() {
-		return showInPrimaryMenu;
+	@Column(name = "show_in_menu", columnDefinition = "boolean default false")
+	public Boolean getShowInMenu() {
+		return showInMenu;
 	}
 
-	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
-		this.showInPrimaryMenu = showInPrimaryMenu;
-	}
-
-	@Column(name = "show_in_secondary_menu", columnDefinition = "boolean default false")
-	public Boolean getShowInSecondaryMenu() {
-		return showInSecondaryMenu;
-	}
-
-	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
-		this.showInSecondaryMenu = showInSecondaryMenu;
+	public void setShowInMenu(Boolean showInMenu) {
+		this.showInMenu = showInMenu;
 	}
 
 }
