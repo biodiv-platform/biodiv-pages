@@ -24,5 +24,7 @@ public class ApiConstants {
 	public static final String COMMENT = "/comment";
 	public static final String ADD = "/add";
 	public static final String DELETE = "/delete";
+	public static final String ENABLE = "/enable";
+	public static final String EDIT = "/edit";
 
 }
