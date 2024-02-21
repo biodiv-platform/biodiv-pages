@@ -107,25 +107,6 @@ public class PageController {
 		}
 	}
 
-	@GET
-	@Path(ApiConstants.ENABLE + ApiConstants.EDIT + "/{userGroupId}")
-	@Consumes(MediaType.TEXT_PLAIN)
-	@Produces(MediaType.APPLICATION_JSON)
-
-	@ValidateUser
-	@ApiOperation(value = "check eligiblity for edit button", notes = "Returns true and false", response = Boolean.class)
-	@ApiResponses(value = { @ApiResponse(code = 400, message = "unable to find the data", response = String.class) })
-
-	public Response enableEdit(@Context HttpServletRequest request, @PathParam("pageId") String pageId) {
-		try {
-			Long pId = Long.parseLong(pageId);
-			Boolean result = pageService.checkForPagePermission(request, pId);
-			return Response.status(Status.OK).entity(result).build();
-		} catch (Exception e) {
-			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
-		}
-	}
-
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
