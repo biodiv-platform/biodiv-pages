@@ -326,12 +326,14 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	@Override
 	public boolean checkForGroupPermission(HttpServletRequest request, Long userGroupId) throws ApiException {
-		if (userGroupId == null) {
-			return AuthUtility.isAdmin(request);
+		Boolean hasPagePermission = false;
+		hasPagePermission = AuthUtility.hasPagePermission(request);
+		if (userGroupId != null && !hasPagePermission) {
+			String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+			userGroupSerivceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
+			hasPagePermission = userGroupSerivceApi.enableEdit(userGroupId.toString());
 		}
-		String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-		userGroupSerivceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
-		return userGroupSerivceApi.enableEdit(userGroupId.toString());
+		return hasPagePermission;
 	}
 
 	@Override
