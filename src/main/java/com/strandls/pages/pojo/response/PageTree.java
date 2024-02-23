@@ -11,8 +11,7 @@ public class PageTree {
 	private Long parentId;
 	private Integer pageIndex;
 	private List<PageTree> children;
-	private Boolean showInPrimaryMenu;
-	private Boolean showInSecondaryMenu;
+	private Boolean showInMenu;
 	private Boolean showInFooter;
 
 	public PageTree() {
@@ -26,21 +25,19 @@ public class PageTree {
 		this.parentId = page.getParentId();
 		this.pageIndex = page.getPageIndex();
 		this.children = new PageArrayList();
-		this.showInPrimaryMenu = page.getShowInPrimaryMenu();
-		this.showInSecondaryMenu = page.getShowInSecondaryMenu();
+		this.setShowInMenu(page.getShowInMenu());
 		this.setShowInFooter(page.getShowInFooter());
 	}
 
-	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs,
-			Boolean showInPrimaryMenu, Boolean showInSecondaryMenu, Boolean showInFooter) {
+	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs, Boolean showInMenu,
+			Boolean showInFooter) {
 		super();
 		this.id = id;
 		this.title = title;
 		this.parentId = parentId;
 		this.pageIndex = index;
 		this.children = childs;
-		this.showInPrimaryMenu = showInPrimaryMenu;
-		this.showInSecondaryMenu = showInSecondaryMenu;
+		this.setShowInMenu(showInMenu);
 		this.setShowInFooter(showInFooter);
 	}
 
@@ -84,20 +81,12 @@ public class PageTree {
 		this.children = children;
 	}
 
-	public Boolean getShowInPrimaryMenu() {
-		return showInPrimaryMenu;
+	public Boolean getShowInMenu() {
+		return showInMenu;
 	}
 
-	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
-		this.showInPrimaryMenu = showInPrimaryMenu;
-	}
-
-	public Boolean getShowInSecondaryMenu() {
-		return showInSecondaryMenu;
-	}
-
-	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
-		this.showInSecondaryMenu = showInSecondaryMenu;
+	public void setShowInMenu(Boolean showInMenu) {
+		this.showInMenu = showInMenu;
 	}
 
 	public Boolean getShowInFooter() {

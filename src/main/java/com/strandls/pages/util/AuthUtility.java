@@ -15,15 +15,15 @@ public class AuthUtility {
 	private AuthUtility() {
 	}
 
-	public static boolean isAdmin(HttpServletRequest request) {
+	public static boolean hasPagePermission(HttpServletRequest request) {
 		CommonProfile profile = AuthUtil.getProfileFromRequest(request);
 		JSONArray roles = (JSONArray) profile.getAttribute("roles");
-		return roles.contains("ROLE_ADMIN");
+		return roles.contains("ROLE_ADMIN") || roles.contains("ROLE_PAGE_EDITOR");
 	}
 
 	public static boolean isAdmin(User user) {
-		for(Role role : user.getRoles()) {
-			if(role.getAuthority().equals("ROLE_ADMIN")) {
+		for (Role role : user.getRoles()) {
+			if (role.getAuthority().equals("ROLE_ADMIN")) {
 				return true;
 			}
 		}

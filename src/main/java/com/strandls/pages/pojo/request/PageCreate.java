@@ -23,8 +23,7 @@ public class PageCreate {
 	private Timestamp date;
 	private Boolean Sticky;
 	private Boolean showInFooter;
-	private Boolean showInPrimaryMenu;
-	private Boolean showInSecondaryMenu;
+	private Boolean showInMenu;
 	private List<PageGallerySlider> galleryData;
 	private Boolean allowComments;
 
@@ -168,20 +167,12 @@ public class PageCreate {
 		this.allowComments = allowComments;
 	}
 
-	public Boolean getShowInPrimaryMenu() {
-		return showInPrimaryMenu;
+	public Boolean getShowInMenu() {
+		return showInMenu;
 	}
 
-	public void setShowInPrimaryMenu(Boolean showInPrimaryMenu) {
-		this.showInPrimaryMenu = showInPrimaryMenu;
-	}
-
-	public Boolean getShowInSecondaryMenu() {
-		return showInSecondaryMenu;
-	}
-
-	public void setShowInSecondaryMenu(Boolean showInSecondaryMenu) {
-		this.showInSecondaryMenu = showInSecondaryMenu;
+	public void setShowInMenu(Boolean showInMenu) {
+		this.showInMenu = showInMenu;
 	}
 
 }
