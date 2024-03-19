@@ -3,6 +3,7 @@ package com.strandls.pages.pojo.response;
 import java.util.List;
 
 import com.strandls.pages.pojo.Page;
+import com.strandls.pages.pojo.PageType;
 
 public class PageTree {
 
@@ -13,6 +14,7 @@ public class PageTree {
 	private List<PageTree> children;
 	private Boolean showInMenu;
 	private Boolean showInFooter;
+	private PageType pageType;
 
 	public PageTree() {
 		super();
@@ -27,10 +29,11 @@ public class PageTree {
 		this.children = new PageArrayList();
 		this.setShowInMenu(page.getShowInMenu());
 		this.setShowInFooter(page.getShowInFooter());
+		this.setPageType(page.getPageType());
 	}
 
 	public PageTree(Long id, String title, Long parentId, Integer index, List<PageTree> childs, Boolean showInMenu,
-			Boolean showInFooter) {
+			Boolean showInFooter, PageType pageType) {
 		super();
 		this.id = id;
 		this.title = title;
@@ -39,6 +42,7 @@ public class PageTree {
 		this.children = childs;
 		this.setShowInMenu(showInMenu);
 		this.setShowInFooter(showInFooter);
+		this.setPageType(pageType);
 	}
 
 	public Long getId() {
@@ -95,5 +99,13 @@ public class PageTree {
 
 	public void setShowInFooter(Boolean showInFooter) {
 		this.showInFooter = showInFooter;
+	}
+
+	public PageType getPageType() {
+		return pageType;
+	}
+
+	public void setPageType(PageType pageType) {
+		this.pageType = pageType;
 	}
 }
