@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.inject.Inject;
-
 import com.strandls.pages.dao.NewsletterDao;
 import com.strandls.pages.pojo.Newsletter;
 import com.strandls.pages.pojo.response.NewsletterArrayList;
 import com.strandls.pages.pojo.response.NewsletterWithParentChildRelationship;
 import com.strandls.pages.services.NewsletterSerivce;
 import com.strandls.pages.util.AbstractService;
+
+import jakarta.inject.Inject;
 
 /**
  * 
@@ -50,7 +50,6 @@ public class NewsletterServiceImpl extends AbstractService<Newsletter> implement
 			Map<Long, NewsletterWithParentChildRelationship> newsletterWithParentChildRelationships) {
 
 		List<NewsletterWithParentChildRelationship> result = new NewsletterArrayList();
-		
 
 		for (Entry<Long, NewsletterWithParentChildRelationship> e : newsletterWithParentChildRelationships.entrySet()) {
 			NewsletterWithParentChildRelationship value = e.getValue();

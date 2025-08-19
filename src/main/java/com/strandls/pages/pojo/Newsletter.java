@@ -3,35 +3,33 @@ package com.strandls.pages.pojo;
 import java.io.Serializable;
 import java.sql.Timestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-
-import org.hibernate.annotations.Type;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 /**
  * This pojo represent the page structure from newsletter.
+ * 
  * @author vilay
  *
  */
 @Entity
 @Table(name = "newsletter")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel
-public class Newsletter implements Serializable{
+@Schema(description = "Newsletter structure")
+public class Newsletter implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3955248341059248359L;
-	
+
 	private Long id;
 	private Long version;
 	private Timestamp date;
@@ -77,8 +75,7 @@ public class Newsletter implements Serializable{
 		this.date = date;
 	}
 
-	@Column(name = "newsitem")
-	@Type(type = "text")
+	@Column(name = "newsitem", columnDefinition = "text")
 	@JsonIgnore
 	public String getNewsitem() {
 		return newsitem;

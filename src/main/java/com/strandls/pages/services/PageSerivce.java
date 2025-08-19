@@ -5,8 +5,6 @@ package com.strandls.pages.services;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import com.strandls.activity.pojo.Activity;
 import com.strandls.activity.pojo.CommentLoggingData;
 import com.strandls.pages.pojo.Page;
@@ -16,6 +14,8 @@ import com.strandls.pages.pojo.request.PageUpdate;
 import com.strandls.pages.pojo.request.ReorderingGalleryPage;
 import com.strandls.pages.pojo.response.PageTree;
 import com.strandls.userGroup.ApiException;
+
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 

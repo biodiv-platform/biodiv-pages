@@ -14,9 +14,9 @@ import com.strandls.pages.pojo.response.NewsletterWithParentChildRelationship;
  *
  */
 public interface NewsletterSerivce {
-	
+
 	public Newsletter findById(Long id);
-	
+
 	public List<NewsletterWithParentChildRelationship> getByUserGroupAndLanguage(Long userGroupId, Long languageId);
 
 	public Newsletter save(Newsletter newsletter);

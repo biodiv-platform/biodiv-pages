@@ -4,34 +4,31 @@ import java.io.Serializable;
 import java.sql.Timestamp;
 import java.util.List;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-
-import org.hibernate.annotations.Type;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import io.swagger.annotations.ApiModel;
+import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 /**
  * This class represent the page structure
- * 
+ *
  * @author vilay
  *
  */
 @Entity
 @Table(name = "page")
 @JsonIgnoreProperties(ignoreUnknown = true)
-@ApiModel
+@Schema(description = "Page structure")
 public class Page implements Serializable {
 
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = -3955248341059248359L;
 
@@ -79,8 +76,7 @@ public class Page implements Serializable {
 		this.id = id;
 	}
 
-	@Column(name = "title", nullable = false)
-	@Type(type = "text")
+	@Column(name = "title", nullable = false, columnDefinition = "text")
 	public String getTitle() {
 		return title;
 	}
@@ -89,8 +85,7 @@ public class Page implements Serializable {
 		this.title = title;
 	}
 
-	@Column(name = "content", nullable = false)
-	@Type(type = "text")
+	@Column(name = "content", nullable = false, columnDefinition = "text")
 	@JsonIgnore
 	public String getContent() {
 		return content;
@@ -100,8 +95,7 @@ public class Page implements Serializable {
 		this.content = content;
 	}
 
-	@Column(name = "description")
-	@Type(type = "text")
+	@Column(name = "description", columnDefinition = "text")
 	public String getDescription() {
 		return description;
 	}
@@ -110,8 +104,7 @@ public class Page implements Serializable {
 		this.description = description;
 	}
 
-	@Column(name = "social_preview")
-	@Type(type = "text")
+	@Column(name = "social_preview", columnDefinition = "text")
 	public String getSocialPreview() {
 		return socialPreview;
 	}

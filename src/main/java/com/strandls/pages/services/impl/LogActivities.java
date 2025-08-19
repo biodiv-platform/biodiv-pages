@@ -1,21 +1,21 @@
 package com.strandls.pages.services.impl;
 
-import javax.inject.Inject;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.strandls.activity.controller.ActivitySerivceApi;
+import com.strandls.activity.controller.ActivityServiceApi;
 import com.strandls.activity.pojo.MailData;
 import com.strandls.activity.pojo.PageAcitvityLogging;
 import com.strandls.pages.Headers;
+
+import jakarta.inject.Inject;
 
 public class LogActivities {
 
 	private final Logger logger = LoggerFactory.getLogger(LogActivities.class);
 
 	@Inject
-	private ActivitySerivceApi activityService;
+	private ActivityServiceApi activityService;
 
 	@Inject
 	private Headers headers;

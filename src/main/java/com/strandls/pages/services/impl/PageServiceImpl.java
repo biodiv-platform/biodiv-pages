@@ -6,14 +6,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.core.HttpHeaders;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.strandls.activity.controller.ActivitySerivceApi;
+import com.strandls.activity.controller.ActivityServiceApi;
 import com.strandls.activity.pojo.Activity;
 import com.strandls.activity.pojo.CommentLoggingData;
 import com.strandls.activity.pojo.MailData;
@@ -36,7 +32,11 @@ import com.strandls.pages.services.PageSerivce;
 import com.strandls.pages.util.AbstractService;
 import com.strandls.pages.util.AuthUtility;
 import com.strandls.userGroup.ApiException;
-import com.strandls.userGroup.controller.UserGroupSerivceApi;
+import com.strandls.userGroup.controller.UserGroupServiceApi;
+
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.core.HttpHeaders;
 
 public class PageServiceImpl extends AbstractService<Page> implements PageSerivce {
 	private final Logger logger = LoggerFactory.getLogger(PageServiceImpl.class);
@@ -51,13 +51,13 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	private PageGallerySilderDao pageGallerySilderDao;
 
 	@Inject
-	private UserGroupSerivceApi userGroupSerivceApi;
+	private UserGroupServiceApi userGroupServiceApi;
 
 	@Inject
 	private Headers headers;
 
 	@Inject
-	private ActivitySerivceApi activityService;
+	private ActivityServiceApi activityService;
 
 	@Inject
 	private LogActivities logActivities;
@@ -330,8 +330,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 		hasPagePermission = AuthUtility.hasPagePermission(request);
 		if (userGroupId != null && !hasPagePermission) {
 			String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-			userGroupSerivceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
-			hasPagePermission = userGroupSerivceApi.enableEdit(userGroupId.toString());
+			userGroupServiceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
+			hasPagePermission = userGroupServiceApi.enableEdit(userGroupId.toString());
 		}
 		return hasPagePermission;
 	}

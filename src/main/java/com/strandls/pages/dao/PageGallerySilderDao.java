@@ -3,8 +3,6 @@ package com.strandls.pages.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.inject.Inject;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.query.Query;
@@ -13,6 +11,8 @@ import org.slf4j.LoggerFactory;
 
 import com.strandls.pages.pojo.PageGallerySlider;
 import com.strandls.pages.util.AbstractDAO;
+
+import jakarta.inject.Inject;
 
 public class PageGallerySilderDao extends AbstractDAO<PageGallerySlider, Long> {
 

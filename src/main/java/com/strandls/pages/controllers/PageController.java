@@ -2,24 +2,6 @@ package com.strandls.pages.controllers;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.naming.directory.InvalidAttributesException;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import org.pac4j.core.profile.CommonProfile;
 
 import com.strandls.activity.pojo.Activity;
@@ -39,14 +21,33 @@ import com.strandls.pages.services.PageSerivce;
 import com.strandls.user.controller.UserServiceApi;
 import com.strandls.user.pojo.User;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DELETE;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.PUT;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 import net.minidev.json.JSONArray;
 
-@Api("Page Serivce")
+@Tag(name = "Page Service") // Updated @Api to @Tag
 @Path(ApiConstants.V1 + ApiConstants.PAGE)
 public class PageController {
 
@@ -61,6 +62,10 @@ public class PageController {
 	@GET
 	@Path("ping")
 	@Produces(MediaType.TEXT_PLAIN)
+	// Added OpenAPI 3 annotations for ping endpoint
+	@Operation(summary = "Ping endpoint", description = "Checks if the service is running")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = String.class))) })
 	public String ping() {
 		return "pong";
 	}
@@ -69,8 +74,16 @@ public class PageController {
 	@Path("{id}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "get the Page by ID", notes = "Returns page with content details", response = PageShowMinimal.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@Operation(summary = "get the Page by ID", description = "Returns page with content details") // Updated
+																									// @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PageShowMinimal.class))), // Added
+																																						// 200
+																																						// response
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "400", description = "Invalid format or ID", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																								// 400
+																																								// response
 	public Response getPage(@PathParam("id") String objectId,
 			@DefaultValue("minimal") @QueryParam("format") String format) {
 		try {
@@ -83,7 +96,7 @@ public class PageController {
 				User user = userServiceApi.getUser(page.getAutherId().toString());
 				return Response.status(Status.OK).entity(new PageShowFull(page, user)).build();
 			} else
-				throw new InvalidAttributesException("Invalid format");
+				throw new IllegalArgumentException("Invalid format");
 		} catch (Exception e) {
 			return Response.status(Status.BAD_REQUEST).build();
 		}
@@ -93,9 +106,15 @@ public class PageController {
 	@Path("tree")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns page details", response = PageTree.class, responseContainer = "List")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
-	// @ValidateUser
+	@Operation(summary = "Find Newsletter by ID", description = "Returns page details") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PageTree.class)))), // Updated
+																																										// responseContainer
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
+	// @ValidateUser // Keep as is, not an OpenAPI annotation
 	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") Long userGroupId,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
@@ -110,10 +129,22 @@ public class PageController {
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Save Page", notes = "Returns Page details", response = PageCreate.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the page", response = String.class) })
+	@Operation(summary = "Save Page", description = "Returns Page details") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Page.class))), // Changed
+																																			// response
+																																			// to
+																																			// Page.class
+			@ApiResponse(responseCode = "404", description = "Could not save the page", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))), // Added
+																																					// 401
+																																					// response
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
 	@ValidateUser
-	public Response savePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageCreate pageCreate) {
+	public Response savePage(@Context HttpServletRequest request,
+			@Parameter(description = "page", required = true) PageCreate pageCreate) { // Updated @ApiParam
 		try {
 			Long userGroupId = pageCreate.getUserGroupId();
 			if (pageService.checkForGroupPermission(request, userGroupId)) {
@@ -130,10 +161,22 @@ public class PageController {
 	@PUT
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Update Page", notes = "Returns Page details", response = PageCreate.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not update the page", response = String.class) })
+	@Operation(summary = "Update Page", description = "Returns Page details") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Page.class))), // Changed
+																																			// response
+																																			// to
+																																			// Page.class
+			@ApiResponse(responseCode = "404", description = "Could not update the page", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))), // Added
+																																					// 401
+																																					// response
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
 	@ValidateUser
-	public Response updatePage(@Context HttpServletRequest request, @ApiParam(name = "page") PageUpdate pageUpdate) {
+	public Response updatePage(@Context HttpServletRequest request,
+			@Parameter(description = "page", required = true) PageUpdate pageUpdate) { // Updated @ApiParam
 		try {
 			Long pageId = Long.parseLong(pageUpdate.getId());
 			if (pageService.checkForPagePermission(request, pageId)) {
@@ -150,11 +193,24 @@ public class PageController {
 	@PUT
 	@Path("updateTree")
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "update the tree structure of the tree", notes = "return the updated hierarachy", response = PageShowMinimal.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@Operation(summary = "update the tree structure of the tree", description = "return the updated hierarachy") // Updated
+																													// @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(array = @ArraySchema(schema = @Schema(implementation = PageTree.class)))), // Updated
+																																										// response
+																																										// to
+																																										// List<PageTree>
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))), // Added
+																																					// 401
+																																					// response
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
 	@ValidateUser
 	public Response updateTreeStructure(@Context HttpServletRequest request,
-			@ApiParam(name = "pageTree") List<PageTreeUpdate> pageTreeUpdates) {
+			@Parameter(description = "pageTree", required = true) List<PageTreeUpdate> pageTreeUpdates) { // Updated
+																											// @ApiParam
 		try {
 			if (pageTreeUpdates.isEmpty())
 				return Response.status(Status.OK).entity("Nothing to update").build();
@@ -177,8 +233,17 @@ public class PageController {
 	@Path("updateParent")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "update the parent of the page", notes = "return the updated hierarachy", response = PageShowMinimal.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@Operation(summary = "update the parent of the page", description = "return the updated hierarachy") // Updated
+																											// @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = PageShowMinimal.class))),
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))), // Added
+																																					// 401
+																																					// response
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
 	@ValidateUser
 	public Response updateParent(@Context HttpServletRequest request, @QueryParam("pageId") Long pageId,
 			@QueryParam("parentId") Long parentId) {
@@ -198,8 +263,20 @@ public class PageController {
 	@POST
 	@Path("migrate")
 	@Consumes(MediaType.TEXT_PLAIN)
-	@ApiOperation(value = "Migrate the Data from newsletter to pages", notes = "Will be depricated once the migration happens")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = String.class) })
+	@Operation(summary = "Migrate the Data from newsletter to pages", description = "Will be depricated once the migration happens") // Updated
+																																		// @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Void.class))), // Changed
+																																			// response
+																																			// to
+																																			// Void.class
+																																			// for
+																																			// no
+																																			// content
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																						// 401
+																																						// response
 	@ValidateUser
 	public Response migrateData(@Context HttpServletRequest request) {
 
@@ -219,8 +296,22 @@ public class PageController {
 
 	@DELETE
 	@Path("{id}")
-	@ApiOperation(value = "Delete the page", notes = "Delete the page")
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Page not found", response = Page.class) })
+	@Operation(summary = "Delete the page", description = "Delete the page") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Page.class))),
+			@ApiResponse(responseCode = "404", description = "Page not found", content = @Content(schema = @Schema(implementation = String.class))), // Changed
+																																						// response
+																																						// to
+																																						// String.class
+																																						// as
+																																						// per
+																																						// reference
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))), // Added
+																																					// 401
+																																					// response
+			@ApiResponse(responseCode = "400", description = "Bad request", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																					// 400
+																																					// response
 	@ValidateUser
 	public Response deletePage(@Context HttpServletRequest request, @PathParam("id") Long pageId) {
 		try {
@@ -239,16 +330,19 @@ public class PageController {
 	@Path(ApiConstants.GALLERY + ApiConstants.REORDERING + "/{pageId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-
 	@ValidateUser
-
-	@ApiOperation(value = "Reorder Page  gallery display order", notes = "return  page data", response = Page.class)
+	@Operation(summary = "Reorder Page gallery display order", description = "return page data") // Updated
+																									// @ApiOperation
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "unable to retrieve the data", response = String.class) })
-
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Page.class))),
+			@ApiResponse(responseCode = "400", description = "Unable to retrieve the data", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																						// 401
+																																						// response
 	public Response reorderingHomePageGallerySlider(@Context HttpServletRequest request,
 			@PathParam("pageId") String pageId,
-			@ApiParam(name = "reorderingHomePage") List<ReorderingGalleryPage> reorderingGalleryPage) {
+			@Parameter(description = "reorderingHomePage", required = true) List<ReorderingGalleryPage> reorderingGalleryPage) { // Updated
+																																	// @ApiParam
 		try {
 			Long pgId = Long.parseLong(pageId);
 
@@ -269,13 +363,15 @@ public class PageController {
 	@Path(ApiConstants.GALLERY + ApiConstants.REMOVE + "/{pageId}/{galleryId}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-
 	@ValidateUser
-
-	@ApiOperation(value = "Delete Page  gallery data by gallery Id", notes = "return  page data", response = Page.class)
+	@Operation(summary = "Delete Page gallery data by gallery Id", description = "return page data") // Updated
+																										// @ApiOperation
 	@ApiResponses(value = {
-			@ApiResponse(code = 400, message = "unable to retrieve the data", response = String.class) })
-
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Page.class))),
+			@ApiResponse(responseCode = "400", description = "Unable to retrieve the data", content = @Content(schema = @Schema(implementation = String.class))),
+			@ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(schema = @Schema(implementation = String.class))) }) // Added
+																																						// 401
+																																						// response
 	public Response removeGalleryData(@Context HttpServletRequest request, @PathParam("pageId") String pageId,
 			@PathParam("galleryId") String galleryId) {
 		try {
@@ -299,14 +395,13 @@ public class PageController {
 	@Path(ApiConstants.ADD + ApiConstants.COMMENT)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-
 	@ValidateUser
-
-	@ApiOperation(value = "Adds a comment", notes = "Return the current activity", response = Activity.class)
-	@ApiResponses(value = { @ApiResponse(code = 400, message = "Unable to log a comment", response = String.class) })
-
+	@Operation(summary = "Adds a comment", description = "Return the current activity") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Activity.class))),
+			@ApiResponse(responseCode = "400", description = "Unable to log a comment", content = @Content(schema = @Schema(implementation = String.class))) })
 	public Response addCommnet(@Context HttpServletRequest request,
-			@ApiParam(name = "commentData") CommentLoggingData commentDatas) {
+			@Parameter(description = "commentData") CommentLoggingData commentDatas) { // Updated @ApiParam
 		try {
 			Activity result = pageService.addPageComment(request, commentDatas);
 			return Response.status(Status.OK).entity(result).build();
@@ -320,14 +415,14 @@ public class PageController {
 	@Path(ApiConstants.DELETE + ApiConstants.COMMENT + "/{commentId}")
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-
 	@ValidateUser
-
-	@ApiOperation(value = "Deletes a comment", notes = "Return the current activity", response = Activity.class)
-	@ApiResponses(value = { @ApiResponse(code = 400, message = "Unable to log a comment", response = String.class) })
-
+	@Operation(summary = "Deletes a comment", description = "Return the current activity") // Updated @ApiOperation
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Success", content = @Content(schema = @Schema(implementation = Activity.class))),
+			@ApiResponse(responseCode = "400", description = "Unable to log a comment", content = @Content(schema = @Schema(implementation = String.class))) })
 	public Response deleteCommnet(@Context HttpServletRequest request,
-			@ApiParam(name = "commentData") CommentLoggingData commentDatas, @PathParam("commentId") String commentId) {
+			@Parameter(description = "commentData") CommentLoggingData commentDatas,
+			@PathParam("commentId") String commentId) { // Updated @ApiParam
 		try {
 			Activity result = pageService.removePagesComment(request, commentDatas, commentId);
 			return Response.status(Status.OK).entity(result).build();

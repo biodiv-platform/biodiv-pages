@@ -2,43 +2,51 @@ package com.strandls.pages.controllers;
 
 import java.util.List;
 
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import com.strandls.pages.ApiConstants;
 import com.strandls.pages.pojo.Newsletter;
 import com.strandls.pages.pojo.response.NewsletterWithParentChildRelationship;
 import com.strandls.pages.services.NewsletterSerivce;
 
-import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiOperation;
-import io.swagger.annotations.ApiParam;
-import io.swagger.annotations.ApiResponse;
-import io.swagger.annotations.ApiResponses;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.ArraySchema;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.inject.Inject;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.DefaultValue;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.QueryParam;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.Status;
 
-@Api("Newsletter Serivce")
+/**
+ * Controller for newsletter related services.
+ *
+ * @author Auto-generated
+ */
+@Tag(name = "Newsletter Service", description = "Endpoints for newsletter operations")
 @Path(ApiConstants.V1 + ApiConstants.NEWSLETTER)
 public class NewsletterController {
 
 	private static final String ENGLISH_LANGAUAGE_ID = "205";
 	@Inject
 	private NewsletterSerivce newsletterSerivce;
-	
+
 	@GET
 	@Path("ping")
 	@Produces(MediaType.TEXT_PLAIN)
+	@Operation(summary = "Ping service", description = "Checks if the service is running")
 	public String ping() {
 		return "pong";
 	}
@@ -47,15 +55,17 @@ public class NewsletterController {
 	@Path("{objectId}")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns Newsletter details", response = Newsletter.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Newsletter not found", response = String.class) })
+	@Operation(summary = "Find Newsletter by ID", description = "Returns Newsletter details")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Newsletter found", content = @Content(schema = @Schema(implementation = Newsletter.class))),
+			@ApiResponse(responseCode = "404", description = "Newsletter not found", content = @Content(schema = @Schema(type = "string"))) })
 	public Response getNewsletter(@PathParam("objectId") String objectId) {
 		try {
 			Long id = Long.parseLong(objectId);
 			Newsletter newsletter = newsletterSerivce.findById(id);
 			return Response.status(Status.OK).entity(newsletter).build();
 		} catch (Exception e) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 
@@ -63,8 +73,10 @@ public class NewsletterController {
 	@Path("group")
 	@Consumes(MediaType.TEXT_PLAIN)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Find Newsletter by ID", notes = "Returns Newsletter details", response = Newsletter.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "Newsletter not found", response = String.class) })
+	@Operation(summary = "Find Newsletters by User Group", description = "Returns a list of Newsletters with parent-child relationships for a given user group and language")
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "successful operation", content = @Content(array = @ArraySchema(schema = @Schema(implementation = NewsletterWithParentChildRelationship.class)))),
+			@ApiResponse(responseCode = "400", description = "Invalid input", content = @Content(schema = @Schema(type = "string"))) })
 	public Response getNewslettersByGroup(@Context HttpServletRequest request,
 			@QueryParam("userGroupId") Long userGroupId,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
@@ -73,21 +85,23 @@ public class NewsletterController {
 					.getByUserGroupAndLanguage(userGroupId, languageId);
 			return Response.status(Status.OK).entity(newsletter).build();
 		} catch (Exception e) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
-	
+
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	@ApiOperation(value = "Save Newsletter", notes = "Returns Newsletter details", response = Newsletter.class)
-	@ApiResponses(value = { @ApiResponse(code = 404, message = "could not save the newsletter", response = String.class) })
-	public Response saveNewsletter(@Context HttpServletRequest request, @ApiParam(name = "Newsletter") Newsletter newsletter) {
+	@Operation(summary = "Save Newsletter", description = "Saves a newsletter and returns the saved object", requestBody = @RequestBody(description = "Newsletter object that needs to be saved", required = true, content = @Content(schema = @Schema(implementation = Newsletter.class))))
+	@ApiResponses(value = {
+			@ApiResponse(responseCode = "200", description = "Newsletter saved successfully", content = @Content(schema = @Schema(implementation = Newsletter.class))),
+			@ApiResponse(responseCode = "400", description = "Could not save the newsletter", content = @Content(schema = @Schema(type = "string"))) })
+	public Response saveNewsletter(@Context HttpServletRequest request, Newsletter newsletter) {
 		try {
 			newsletter = newsletterSerivce.save(newsletter);
 			return Response.status(Status.OK).entity(newsletter).build();
 		} catch (Exception e) {
-			return Response.status(Status.BAD_REQUEST).build();
+			return Response.status(Status.BAD_REQUEST).entity(e.getMessage()).build();
 		}
 	}
 }
