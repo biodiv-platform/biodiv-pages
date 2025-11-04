@@ -115,9 +115,10 @@ public class PageController {
 																																					// 400
 																																					// response
 	// @ValidateUser // Keep as is, not an OpenAPI annotation
-	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") Long userGroupId,
+	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") String userGroupIdStr,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
+			Long userGroupId = (userGroupIdStr == null || userGroupIdStr.isEmpty()) ? null : Long.parseLong(userGroupIdStr);
 			Boolean sticky = pageService.getCheckForStickyPermission(request);
 			List<PageTree> page = pageService.getTreeStructure(userGroupId, languageId, sticky);
 			return Response.status(Status.OK).entity(page).build();
