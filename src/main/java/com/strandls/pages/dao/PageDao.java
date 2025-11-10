@@ -50,7 +50,7 @@ public class PageDao extends AbstractDAO<Page, Long> {
 	public List<Page> getByUserGroupAndLanguage(Long userGroupId, Long languageId, Boolean sticky) {
 		String queryStr = "" + "from Page t "
 				+ " where ((t.userGroupId is null and :userGroupId is null) or t.userGroupId = :userGroupId) and "
-				+ "t.languageId = :languageId and is_deleted = false and sticky = :sticky";
+				+ "t.languageId = :languageId and isDeleted = false and sticky = :sticky";
 
 		Session session = sessionFactory.openSession();
 		Query<Page> query = session.createQuery(queryStr, Page.class);
