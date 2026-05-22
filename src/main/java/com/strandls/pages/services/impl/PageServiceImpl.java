@@ -69,6 +69,8 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 	@Override
 	public Page savePage(HttpServletRequest request, PageCreate pageCreate) {
+		logger.debug("Entering savePage. Title: '{}', UserGroupId: {}", pageCreate.getTitle(),
+				pageCreate.getUserGroupId());
 
 		Page page = new Page();
 		page.setTitle(pageCreate.getTitle());
@@ -91,23 +93,34 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 
 		page.setAllowComments(pageCreate.getAllowComments());
 
+		logger.debug("Executing save(page)...");
 		page = save(page);
+		logger.debug("Successfully executed save(page). Generated Page ID: {}", page.getId());
 
 		page.setPageIndex(page.getId().intValue());
+		logger.debug("Updated pageIndex to: {}", page.getPageIndex());
 
 		List<PageGallerySlider> galleryData = pageCreate.getGalleryData();
 		if (galleryData != null && !galleryData.isEmpty()) {
+			logger.debug("Found {} gallery items to save.", galleryData.size());
 			for (PageGallerySlider gallery : galleryData) {
 				gallery.setPageId(page.getId());
 				gallery.setAuthorId(page.getAutherId());
+
+				logger.debug("Saving gallery item for Page ID: {}", page.getId());
 				pageGallerySilderDao.save(gallery);
 			}
-
+			logger.debug("Finished saving gallery items.");
+		} else {
+			logger.debug("No gallery data found in payload.");
 		}
 
+		logger.debug("Invoking logActivities.LogPageActivities...");
 		logActivities.LogPageActivities(request.getHeader(HttpHeaders.AUTHORIZATION), null, page.getId(), page.getId(),
 				"page", null, "Page created", generatePageMailData(page.getId()));
+		logger.debug("Finished logActivities.LogPageActivities.");
 
+		logger.debug("Exiting savePage. Fetching page with gallery data details.");
 		return getPageWithGalleryData(page);
 	}
 
@@ -328,10 +341,20 @@ public class PageServiceImpl extends AbstractService<Page> implements PageSerivc
 	public boolean checkForGroupPermission(HttpServletRequest request, Long userGroupId) throws ApiException {
 		Boolean hasPagePermission = false;
 		hasPagePermission = AuthUtility.hasPagePermission(request);
+		logger.debug("Initial AuthUtility.hasPagePermission check: {}", hasPagePermission);
+
 		if (userGroupId != null && !hasPagePermission) {
 			String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 			userGroupServiceApi.getApiClient().addDefaultHeader(HttpHeaders.AUTHORIZATION, authHeader);
-			hasPagePermission = userGroupServiceApi.enableEdit(userGroupId.toString());
+
+			try {
+				logger.debug("Calling userGroupServiceApi.enableEdit for group ID: {}", userGroupId);
+				hasPagePermission = userGroupServiceApi.enableEdit(userGroupId.toString());
+				logger.debug("Result from userGroupServiceApi.enableEdit: {}", hasPagePermission);
+			} catch (Exception e) {
+				logger.error("API call to userGroupServiceApi.enableEdit failed for group: " + userGroupId, e);
+				throw e;
+			}
 		}
 		return hasPagePermission;
 	}
