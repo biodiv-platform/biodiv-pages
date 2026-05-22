@@ -115,10 +115,12 @@ public class PageController {
 																																					// 400
 																																					// response
 	// @ValidateUser // Keep as is, not an OpenAPI annotation
-	public Response getTreeStructure(@Context HttpServletRequest request, @QueryParam("userGroupId") String userGroupIdStr,
+	public Response getTreeStructure(@Context HttpServletRequest request,
+			@QueryParam("userGroupId") String userGroupIdStr,
 			@QueryParam("languageId") @DefaultValue(ENGLISH_LANGAUAGE_ID) Long languageId) {
 		try {
-			Long userGroupId = (userGroupIdStr == null || userGroupIdStr.isEmpty()) ? null : Long.parseLong(userGroupIdStr);
+			Long userGroupId = (userGroupIdStr == null || userGroupIdStr.isEmpty()) ? null
+					: Long.parseLong(userGroupIdStr);
 			Boolean sticky = pageService.getCheckForStickyPermission(request);
 			List<PageTree> page = pageService.getTreeStructure(userGroupId, languageId, sticky);
 			return Response.status(Status.OK).entity(page).build();
@@ -145,16 +147,26 @@ public class PageController {
 																																					// response
 	@ValidateUser
 	public Response savePage(@Context HttpServletRequest request,
-			@Parameter(description = "page", required = true) PageCreate pageCreate) { // Updated @ApiParam
+			@Parameter(description = "page", required = true) PageCreate pageCreate) {
+
+		System.out.println("[DEBUG-SAVE-PAGE] ----> Entered savePage Controller Endpoint <----");
+
 		try {
 			Long userGroupId = pageCreate.getUserGroupId();
+			System.out.println("[DEBUG-SAVE-PAGE] Parsed userGroupId: " + userGroupId);
+
 			if (pageService.checkForGroupPermission(request, userGroupId)) {
+				System.out.println("[DEBUG-SAVE-PAGE] Permission check PASSED. Moving to service layer.");
 				Page page = pageService.savePage(request, pageCreate);
 				return Response.status(Status.OK).entity(page).build();
 			} else {
+				System.out.println("[DEBUG-SAVE-PAGE] Permission check FAILED.");
 				return Response.status(Status.UNAUTHORIZED).entity("Not authorized to add page to the group").build();
 			}
 		} catch (Exception e) {
+			// This will print the exact line number and code trail causing the crash
+			System.out.println("[DEBUG-SAVE-PAGE] !!! CRITICAL ERROR CAUGHT IN CONTROLLER !!!");
+			e.printStackTrace(System.out);
 			return Response.status(Status.BAD_REQUEST).build();
 		}
 	}
